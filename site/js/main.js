@@ -859,53 +859,122 @@ class MobileOptimizer {
     }
     
     init() {
-        // Оптимизация для мобильных устройств
         if (this.isMobile) {
             this.optimizeForMobile();
         }
         
-        // Слушаем изменение размера окна
-        window.addEventListener('resize', () => {
-            const wasMobile = this.isMobile;
-            this.isMobile = this.checkMobile();
-            
-            if (wasMobile !== this.isMobile) {
-                location.reload(); // Перезагружаем для применения стилей
-            }
-        });
+        // Оптимизация для очень маленьких экранов
+        if (window.innerWidth <= 480) {
+            this.optimizeForSmallScreens();
+        }
+        
+        // Исправление для iOS
+        this.fixIOSIssues();
     }
     
     optimizeForMobile() {
-        // Увеличиваем размеры кликабельных элементов
-        this.increaseTouchTargets();
-        
-        // Улучшаем прокрутку
-        this.improveScrolling();
-        
-        // Предотвращаем зум при фокусе
-        this.preventZoomOnFocus();
+        this.fixFilterOverlap();
+        this.optimizeTouchTargets();
+        this.improveMobileScrolling();
+        this.preventDoubleTapZoom();
     }
     
-    increaseTouchTargets() {
-        // Увеличиваем минимальную высоту для кнопок фильтров
+    optimizeForSmallScreens() {
+        // Уменьшаем отступы для очень маленьких экранов
+        document.documentElement.style.fontSize = '14px';
+        
+        // Улучшаем отображение фильтров
+        this.adjustFiltersForSmallScreens();
+    }
+    
+    fixIOSIssues() {
+        // Исправление для iOS Safari
+        if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+            this.fixIOSInputs();
+            this.fixIOSScroll();
+        }
+    }
+    
+    fixFilterOverlap() {
+        // Исправляем наложение элементов фильтров
+        const filtersSection = document.querySelector('.filters-section');
+        if (filtersSection) {
+            filtersSection.style.overflow = 'visible';
+        }
+        
+        // Убеждаемся, что элементы фильтров не выходят за пределы
+        document.querySelectorAll('.filter-group').forEach(group => {
+            group.style.position = 'relative';
+            group.style.zIndex = '1';
+        });
+    }
+    
+    adjustFiltersForSmallScreens() {
+        // Адаптируем фильтры для очень маленьких экранов
+        const filterOptions = document.querySelectorAll('.filter-option');
+        if (window.innerWidth <= 360) {
+            filterOptions.forEach(option => {
+                option.style.fontSize = '0.8rem';
+                option.style.padding = '0.5rem 0.75rem';
+            });
+        }
+    }
+    
+    optimizeTouchTargets() {
+        // Увеличиваем область касания для всех интерактивных элементов
         const style = document.createElement('style');
         style.textContent = `
             @media (max-width: 768px) {
-                .filter-option, .btn, .btn-icon, .page-btn {
+                /* Увеличение области касания */
+                .filter-option, .btn, .btn-icon, .page-btn, 
+                .view-btn, .program-card, nav a {
                     min-height: 44px !important;
                     min-width: 44px !important;
                 }
                 
+                /* Улучшение отступов для удобного касания */
                 .program-card {
-                    margin-bottom: 12px;
+                    margin-bottom: 15px;
+                    padding: 15px;
+                }
+                
+                /* Увеличение отступов внутри карточек */
+                .program-body {
+                    padding: 15px;
+                }
+                
+                /* Улучшение кнопок действий */
+                .program-actions {
+                    gap: 10px;
+                }
+                
+                .btn-icon {
+                    width: 48px !important;
+                    height: 48px !important;
+                }
+            }
+            
+            @media (max-width: 480px) {
+                /* Дополнительная оптимизация для очень маленьких экранов */
+                .filter-option {
+                    min-width: 100% !important;
+                    margin-bottom: 5px;
+                }
+                
+                .program-details {
+                    margin: 15px 0;
+                }
+                
+                .detail-item {
+                    padding: 8px 0;
                 }
             }
         `;
         document.head.appendChild(style);
     }
     
-    improveScrolling() {
-        // Плавная прокрутка для якорных ссылок
+    improveMobileScrolling() {
+        // Плавная прокрутка для всех ссылок
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 const targetId = this.getAttribute('href');
@@ -914,22 +983,120 @@ class MobileOptimizer {
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     e.preventDefault();
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
                     });
                 }
             });
         });
+        
+        // Улучшение прокрутки для мобильных
+        document.addEventListener('touchmove', function(e) {
+            // Предотвращаем прокрутку при касании инпута
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
+                e.stopPropagation();
+            }
+        }, { passive: false });
     }
     
-    preventZoomOnFocus() {
-        // Предотвращаем зум при фокусе на инпуты в iOS
-        document.addEventListener('touchstart', function() {}, {passive: true});
+    preventDoubleTapZoom() {
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    }
+    
+    fixIOSInputs() {
+        // Исправление для iOS input zoom
+        const inputs = document.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                setTimeout(() => {
+                    window.scrollTo(0, document.body.scrollTop);
+                }, 100);
+            });
+        });
+    }
+    
+    fixIOSScroll() {
+        // Исправление для smooth scroll на iOS
+        if ('scrollBehavior' in document.documentElement.style) {
+            return;
+        }
+        
+        // Полифилл для smooth scroll
+        const smoothScroll = function(target) {
+            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
+            const startPosition = window.pageYOffset;
+            const distance = targetPosition - startPosition;
+            const duration = 500;
+            let start = null;
+            
+            function animation(currentTime) {
+                if (start === null) start = currentTime;
+                const timeElapsed = currentTime - start;
+                const run = ease(timeElapsed, startPosition, distance, duration);
+                window.scrollTo(0, run);
+                if (timeElapsed < duration) requestAnimationFrame(animation);
+            }
+            
+            function ease(t, b, c, d) {
+                t /= d / 2;
+                if (t < 1) return c / 2 * t * t + b;
+                t--;
+                return -c / 2 * (t * (t - 2) - 1) + b;
+            }
+            
+            requestAnimationFrame(animation);
+        };
+        
+        // Применяем ко всем якорным ссылкам
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    e.preventDefault();
+                    smoothScroll(targetElement);
+                }
+            });
+        });
     }
 }
 
-// Инициализируем при загрузке DOM
+// Инициализируем оптимизацию при загрузке
 document.addEventListener('DOMContentLoaded', () => {
-    new MobileOptimizer();
+    const mobileOptimizer = new MobileOptimizer();
+    
+    // Обновляем при изменении размера окна
+    window.addEventListener('resize', () => {
+        const isMobileNow = window.innerWidth <= 768;
+        if (mobileOptimizer.isMobile !== isMobileNow) {
+            location.reload(); // Перезагружаем для применения всех стилей
+        }
+    });
+    
+    // Исправление для мобильной клавиатуры
+    if (window.innerWidth <= 768) {
+        const viewport = document.querySelector('meta[name="viewport"]');
+        if (viewport) {
+            viewport.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+        }
+        
+        // Предотвращаем всплывающую клавиатуру при скролле
+        document.addEventListener('touchstart', function(e) {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
+                setTimeout(() => {
+                    e.target.scrollIntoViewIfNeeded(true);
+                }, 100);
+            }
+        });
+    }
 });
