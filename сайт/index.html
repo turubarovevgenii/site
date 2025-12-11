@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ВГТУ - Образовательные программы</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Шапка -->
+    <header>
+        <div class="container header-content">
+            <div class="university-info">
+                <h1>ВОРОНЕЖСКИЙ ГОСУДАРСТВЕННЫЙ ТЕХНИЧЕСКИЙ УНИВЕРСИТЕТ</h1>
+                <p>Качество образования - гарантия успешного будущего</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Главная</a></li>
+                    <li><a href="#">Об университете</a></li>
+                    <li><a href="#">Образование</a></li>
+                    <li><a href="#">Наука</a></li>
+                    <li><a href="#">Абитуриентам</a></li>
+                    <li><a href="#">Студентам</a></li>
+                    <li><a href="#">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Хлебные крошки -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <ol>
+                <li><a href="#">Главная</a></li>
+                <li><a href="#">Образование</a></li>
+                <li>Образовательные программы</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <main class="container">
+        <!-- Заголовок страницы -->
+        <div class="page-header">
+            <h1 class="page-title">Образовательные программы</h1>
+            <p class="page-subtitle">Выберите образовательную программу по уровню образования, факультету или направлению подготовки</p>
+        </div>
+
+        <!-- Фильтры -->
+        <section class="filters-section" aria-labelledby="filters-title">
+            <div class="filters-header">
+                <h2 id="filters-title" class="filters-title">Поиск программ</h2>
+                <button class="reset-filters" id="resetFilters">
+                    <i class="fas fa-redo"></i> Сбросить фильтры
+                </button>
+            </div>
+            
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label class="filter-label"><i class="fas fa-university"></i> Факультет</label>
+                    <select class="filter-select" id="facultyFilter">
+                        <option value="">Все факультеты</option>
+                        <option value="architecture">Факультет архитектуры и градостроительства</option>
+                        <option value="construction">Строительный факультет</option>
+                        <option value="it">Факультет информационных технологий</option>
+                        <option value="energy">Энергетический факультет</option>
+                        <option value="mechanical">Машиностроительный факультет</option>
+                        <option value="economics">Экономический факультет</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label"><i class="fas fa-graduation-cap"></i> Уровень образования</label>
+                    <div class="filter-options">
+                        <div class="filter-option active" data-level="">Все</div>
+                        <div class="filter-option" data-level="bachelor">Бакалавриат</div>
+                        <div class="filter-option" data-level="master">Магистратура</div>
+                        <div class="filter-option" data-level="specialist">Специалитет</div>
+                        <div class="filter-option" data-level="postgraduate">Аспирантура</div>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label"><i class="fas fa-hashtag"></i> Код направления</label>
+                    <input type="text" class="filter-input" id="codeFilter" placeholder="Например: 07.03.01">
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label"><i class="fas fa-search"></i> Название программы</label>
+                    <input type="text" class="filter-input" id="nameFilter" placeholder="Введите название...">
+                </div>
+            </div>
+            
+            <div class="search-actions">
+                <button class="btn btn-primary" id="searchButton">
+                    <i class="fas fa-search"></i> Найти программы
+                </button>
+                <button class="btn btn-secondary" id="advancedFilters">
+                    <i class="fas fa-sliders-h"></i> Расширенный поиск
+                </button>
+            </div>
+        </section>
+
+        <!-- Управление результатами -->
+        <div class="results-controls">
+            <div class="results-count">Найдено <span id="programsCount">12</span> программ</div>
+            
+            <div class="sort-options">
+                <span>Сортировать:</span>
+                <select class="sort-select" id="sortSelect">
+                    <option value="name-asc">По названию (А-Я)</option>
+                    <option value="name-desc">По названию (Я-А)</option>
+                    <option value="code-asc">По коду</option>
+                    <option value="budget-desc">По бюджетным местам</option>
+                    <option value="price-asc">По стоимости (возр.)</option>
+                    <option value="price-desc">По стоимости (убыв.)</option>
+                </select>
+            </div>
+            
+            <div class="view-options">
+                <button class="view-btn active" data-view="grid" aria-label="Сетка">
+                    <i class="fas fa-th"></i>
+                </button>
+                <button class="view-btn" data-view="list" aria-label="Список">
+                    <i class="fas fa-list"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Спиннер загрузки -->
+        <div class="loading-spinner" id="loadingSpinner">
+            <div class="spinner"></div>
+            <p>Загрузка программ...</p>
+        </div>
+
+        <!-- Сетка программ -->
+        <div class="programs-grid" id="programsGrid">
+            <!-- Карточка 1 -->
+            <article class="program-card">
+                <div class="program-header">
+                    <div class="program-code">07.03.01</div>
+                    <div class="program-meta">
+                        <span class="program-level level-bachelor">Бакалавриат</span>
+                        <span class="program-form">Очная</span>
+                    </div>
+                </div>
+                
+                <div class="program-body">
+                    <h3 class="program-title">Архитектура</h3>
+                    <p class="program-profile">Профиль «Архитектура»</p>
+                    
+                    <div class="program-faculty">
+                        <i class="fas fa-university"></i>
+                        Факультет архитектуры и градостроительства
+                    </div>
+                    
+                    <div class="program-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Срок обучения</span>
+                            <span class="detail-value">4 года</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Бюджетных мест</span>
+                            <span class="detail-value">25</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Стоимость</span>
+                            <span class="detail-value">150 000 ₽/год</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Форма</span>
+                            <span class="detail-value">Очная</span>
+                        </div>
+                    </div>
+                    
+                    <p class="program-description">Подготовка архитекторов для проектирования жилых, общественных и промышленных зданий...</p>
+                </div>
+                
+                <div class="program-footer">
+                    <a href="program-detail.html?code=07.03.01" class="btn btn-primary btn-small">Подробнее</a>
+                    <div class="program-actions">
+                        <button class="btn-icon btn-compare" aria-label="Добавить к сравнению">
+                            <i class="fas fa-balance-scale"></i>
+                        </button>
+                        <button class="btn-icon btn-favorite" aria-label="Добавить в избранное">
+                            <i class="far fa-star"></i>
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 2 -->
+            <article class="program-card">
+                <div class="program-header">
+                    <div class="program-code">09.03.01</div>
+                    <div class="program-meta">
+                        <span class="program-level level-bachelor">Бакалавриат</span>
+                        <span class="program-form">Очная/Заочная</span>
+                    </div>
+                </div>
+                
+                <div class="program-body">
+                    <h3 class="program-title">Информатика и вычислительная техника</h3>
+                    <p class="program-profile">Профиль «Системы автоматизированного проектирования»</p>
+                    
+                    <div class="program-faculty">
+                        <i class="fas fa-university"></i>
+                        Факультет информационных технологий
+                    </div>
+                    
+                    <div class="program-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Срок обучения</span>
+                            <span class="detail-value">4 года</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Бюджетных мест</span>
+                            <span class="detail-value">40</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Стоимость</span>
+                            <span class="detail-value">120 000 ₽/год</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Форма</span>
+                            <span class="detail-value">Очная/Заочная</span>
+                        </div>
+                    </div>
+                    
+                    <p class="program-description">Подготовка специалистов в области разработки программного обеспечения и компьютерных систем...</p>
+                </div>
+                
+                <div class="program-footer">
+                    <a href="program-detail.html?code=09.03.01" class="btn btn-primary btn-small">Подробнее</a>
+                    <div class="program-actions">
+                        <button class="btn-icon btn-compare" aria-label="Добавить к сравнению">
+                            <i class="fas fa-balance-scale"></i>
+                        </button>
+                        <button class="btn-icon btn-favorite" aria-label="Добавить в избранное">
+                            <i class="far fa-star"></i>
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 3 -->
+            <article class="program-card">
+                <div class="program-header">
+                    <div class="program-code">08.03.01</div>
+                    <div class="program-meta">
+                        <span class="program-level level-bachelor">Бакалавриат</span>
+                        <span class="program-form">Очная</span>
+                    </div>
+                </div>
+                
+                <div class="program-body">
+                    <h3 class="program-title">Строительство</h3>
+                    <p class="program-profile">Профиль «Промышленное и гражданское строительство»</p>
+                    
+                    <div class="program-faculty">
+                        <i class="fas fa-university"></i>
+                        Строительный факультет
+                    </div>
+                    
+                    <div class="program-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Срок обучения</span>
+                            <span class="detail-value">4 года</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Бюджетных мест</span>
+                            <span class="detail-value">35</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Стоимость</span>
+                            <span class="detail-value">130 000 ₽/год</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Форма</span>
+                            <span class="detail-value">Очная</span>
+                        </div>
+                    </div>
+                    
+                    <p class="program-description">Подготовка инженеров-строителей для проектирования, строительства и эксплуатации зданий и сооружений...</p>
+                </div>
+                
+                <div class="program-footer">
+                    <a href="program-detail.html?code=08.03.01" class="btn btn-primary btn-small">Подробнее</a>
+                    <div class="program-actions">
+                        <button class="btn-icon btn-compare" aria-label="Добавить к сравнению">
+                            <i class="fas fa-balance-scale"></i>
+                        </button>
+                        <button class="btn-icon btn-favorite" aria-label="Добавить в избранное">
+                            <i class="far fa-star"></i>
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 4 (Магистратура) -->
+            <article class="program-card">
+                <div class="program-header">
+                    <div class="program-code">07.04.01</div>
+                    <div class="program-meta">
+                        <span class="program-level level-master">Магистратура</span>
+                        <span class="program-form">Очная</span>
+                    </div>
+                </div>
+                
+                <div class="program-body">
+                    <h3 class="program-title">Архитектура</h3>
+                    <p class="program-profile">Профиль «Градостроительство»</p>
+                    
+                    <div class="program-faculty">
+                        <i class="fas fa-university"></i>
+                        Факультет архитектуры и градостроительства
+                    </div>
+                    
+                    <div class="program-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Срок обучения</span>
+                            <span class="detail-value">2 года</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Бюджетных мест</span>
+                            <span class="detail-value">15</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Стоимость</span>
+                            <span class="detail-value">180 000 ₽/год</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Форма</span>
+                            <span class="detail-value">Очная</span>
+                        </div>
+                    </div>
+                    
+                    <p class="program-description">Углубленная подготовка в области градостроительного планирования и проектирования городской среды...</p>
+                </div>
+                
+                <div class="program-footer">
+                    <a href="program-detail.html?code=07.04.01" class="btn btn-primary btn-small">Подробнее</a>
+                    <div class="program-actions">
+                        <button class="btn-icon btn-compare" aria-label="Добавить к сравнению">
+                            <i class="fas fa-balance-scale"></i>
+                        </button>
+                        <button class="btn-icon btn-favorite" aria-label="Добавить в избранное">
+                            <i class="far fa-star"></i>
+                        </button>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <!-- Пагинация -->
+        <nav class="pagination" aria-label="Навигация по страницам">
+            <button class="page-btn" disabled aria-label="Предыдущая страница">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="page-btn active" aria-label="Страница 1">1</button>
+            <button class="page-btn" aria-label="Страница 2">2</button>
+            <button class="page-btn" aria-label="Страница 3">3</button>
+            <button class="page-btn" aria-label="Страница 4">4</button>
+            <button class="page-btn" aria-label="Страница 5">5</button>
+            <button class="page-btn" aria-label="Следующая страница">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </nav>
+    </main>
+
+    <!-- Футер -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Контакты</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> г. Воронеж, ул. 20-летия Октября, 84</li>
+                        <li><i class="fas fa-phone"></i> +7 (473) 255-35-35</li>
+                        <li><i class="fas fa-envelope"></i> info@vgasu.vrn.ru</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Быстрые ссылки</h3>
+                    <ul>
+                        <li><a href="#">Приемная комиссия</a></li>
+                        <li><a href="#">Расписание занятий</a></li>
+                        <li><a href="#">Электронная библиотека</a></li>
+                        <li><a href="#">Личный кабинет студента</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Подписывайтесь на нас</h3>
+                    <ul>
+                        <li><a href="#"><i class="fab fa-vk"></i> ВКонтакте</a></li>
+                        <li><a href="#"><i class="fab fa-telegram"></i> Telegram</a></li>
+                        <li><a href="#"><i class="fab fa-youtube"></i> YouTube</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2023 Воронежский государственный технический университет. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/notifications.js"></script>
+</body>
+</html>

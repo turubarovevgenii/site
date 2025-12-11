@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Архитектура 07.03.01 - ВГТУ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/program-detail.css">
+</head>
+<body>
+    <!-- ШАПКА -->
+    <header>
+        <div class="container header-content">
+            <div class="university-info">
+                <h1>ВОРОНЕЖСКИЙ ГОСУДАРСТВЕННЫЙ ТЕХНИЧЕСКИЙ УНИВЕРСИТЕТ</h1>
+                <p>Качество образования - гарантия успешного будущего</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="#">Об университете</a></li>
+                    <li><a href="#" class="active">Образование</a></li>
+                    <li><a href="#">Наука</a></li>
+                    <li><a href="#">Абитуриентам</a></li>
+                    <li><a href="#">Студентам</a></li>
+                    <li><a href="#">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ХЛЕБНЫЕ КРОШКИ -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <ol>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="index.html">Образовательные программы</a></li>
+                <li>Архитектура (07.03.01)</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main class="container">
+        <!-- ШАПКА ПРОГРАММЫ -->
+        <header class="program-header">
+            <div class="program-title-section">
+                <div class="program-title">
+                    <div class="program-code">07.03.01</div>
+                    <h1>Архитектура</h1>
+                    <p class="program-profile">Профиль «Архитектура»</p>
+                </div>
+                
+                <div class="program-actions">
+                    <a href="#documents" class="btn btn-primary" onclick="showTab('documents')">
+                        <i class="fas fa-file-alt"></i> Документы
+                    </a>
+                    <button class="btn btn-secondary" id="compareBtn">
+                        <i class="fas fa-balance-scale"></i> Сравнить
+                    </button>
+                    <button class="btn-icon" id="favoriteBtn" aria-label="Добавить в избранное">
+                        <i class="far fa-star"></i>
+                    </button>
+                    <button class="btn-icon" aria-label="Поделиться">
+                        <i class="fas fa-share-alt"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="program-meta-grid">
+                <div class="meta-item">
+                    <span class="meta-label"><i class="fas fa-university"></i> Факультет</span>
+                    <span class="meta-value">Факультет архитектуры и градостроительства</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label"><i class="fas fa-graduation-cap"></i> Уровень</span>
+                    <span class="meta-value">Бакалавриат</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label"><i class="fas fa-clock"></i> Срок обучения</span>
+                    <span class="meta-value">4 года (очная форма)</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label"><i class="fas fa-users"></i> Бюджетные места</span>
+                    <span class="meta-value">25 (2024 год)</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label"><i class="fas fa-ruble-sign"></i> Стоимость</span>
+                    <span class="meta-value">150 000 ₽/год</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label"><i class="fas fa-language"></i> Язык обучения</span>
+                    <span class="meta-value">Русский</span>
+                </div>
+            </div>
+        </header>
+        
+        <div class="content-grid">
+            <!-- ОСНОВНОЙ КОНТЕНТ -->
+            <div class="main-content">
+                <!-- ВКЛАДКИ -->
+                <div class="tabs-container">
+                    <div class="tabs-header" role="tablist">
+                        <button class="tab-btn active" onclick="showTab('general')">
+                            <i class="fas fa-info-circle"></i> Общие сведения
+                        </button>
+                        <button class="tab-btn" onclick="showTab('documents')">
+                            <i class="fas fa-file-alt"></i> Документы
+                        </button>
+                        <button class="tab-btn" onclick="showTab('curriculum')">
+                            <i class="fas fa-book"></i> Учебный план
+                        </button>
+                        <button class="tab-btn" onclick="showTab('career')">
+                            <i class="fas fa-briefcase"></i> Карьера
+                        </button>
+                        <button class="tab-btn" onclick="showTab('teachers')">
+                            <i class="fas fa-chalkboard-teacher"></i> Преподаватели
+                        </button>
+                    </div>
+                    
+                    <div class="tab-content">
+                        <!-- ОБЩИЕ СВЕДЕНИЯ -->
+                        <section id="general" class="tab-pane active">
+                            <h2>Общие сведения об образовательной программе</h2>
+                            <p>Программа подготовки бакалавров по направлению 07.03.01 "Архитектура" готовит специалистов для проектирования жилых, общественных и промышленных зданий, градостроительного планирования и дизайна городской среды.</p>
+                            
+                            <div class="info-grid">
+                                <div class="info-section">
+                                    <h4><i class="fas fa-bullseye"></i> Цель программы</h4>
+                                    <p>Подготовка архитекторов, способных решать комплексные задачи проектирования архитектурных объектов и городской среды с учетом эстетических, функциональных, технических и экономических требований.</p>
+                                </div>
+                                
+                                <div class="info-section">
+                                    <h4><i class="fas fa-tasks"></i> Задачи программы</h4>
+                                    <ul>
+                                        <li>Формирование профессиональных компетенций в области архитектурного проектирования</li>
+                                        <li>Развитие навыков работы с современными технологиями проектирования (BIM, CAD)</li>
+                                        <li>Подготовка к работе в условиях реального проектирования и строительства</li>
+                                        <li>Воспитание ответственного отношения к архитектурному наследию и окружающей среде</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="info-section">
+                                    <h4><i class="fas fa-user-graduate"></i> Ключевые компетенции</h4>
+                                    <ul>
+                                        <li>Архитектурное проектирование зданий и сооружений</li>
+                                        <li>Градостроительное проектирование</li>
+                                        <li>Работа с нормативной документацией</li>
+                                        <li>Использование современных программных комплексов</li>
+                                        <li>Визуализация и презентация проектных решений</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="info-section">
+                                    <h4><i class="fas fa-calendar-alt"></i> Сроки и форма обучения</h4>
+                                    <ul>
+                                        <li><strong>Срок обучения:</strong> 4 года (очная форма)</li>
+                                        <li><strong>Начало занятий:</strong> 1 сентября</li>
+                                        <li><strong>Количество семестров:</strong> 8</li>
+                                        <li><strong>Общая трудоемкость:</strong> 240 зачетных единиц</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="info-section" style="margin-top: 2rem;">
+                                <h4><i class="fas fa-door-open"></i> Вступительные испытания</h4>
+                                <p>Для поступления на программу необходимы результаты ЕГЭ по следующим предметам:</p>
+                                <ul>
+                                    <li>Русский язык (минимальный балл: 40)</li>
+                                    <li>Математика (минимальный балл: 39)</li>
+                                    <li>Творческое испытание (рисунок, композиция) - минимальный балл: 40</li>
+                                </ul>
+                            </div>
+                        </section>
+                        
+                        <!-- ДОКУМЕНТЫ -->
+                        <section id="documents" class="tab-pane">
+                            <h2>Документы образовательной программы</h2>
+                            <p>Все нормативные документы, регламентирующие образовательный процесс по программе "Архитектура".</p>
+                            
+                            <div class="documents-section">
+                                <h3>Учебно-методические документы по годам</h3>
+                                
+                                <div class="documents-tabs">
+                                    <button class="doc-tab active" onclick="showDocumentsYear('2024')">2024-2025 учебный год</button>
+                                    <button class="doc-tab" onclick="showDocumentsYear('2023')">2023-2024 учебный год</button>
+                                    <button class="doc-tab" onclick="showDocumentsYear('2022')">2022-2023 учебный год</button>
+                                </div>
+                                
+                                <!-- Документы 2024 года -->
+                                <div id="docs-2024" class="documents-list">
+                                    <article class="document-card">
+                                        <div class="document-header">
+                                            <h4 class="document-title">Основная образовательная программа</h4>
+                                            <span class="document-type">PDF</span>
+                                        </div>
+                                        <p class="document-description">Полный текст образовательной программы 07.03.01 "Архитектура"</p>
+                                        <div class="document-meta">
+                                            <span><i class="far fa-calendar"></i> 15.08.2024</span>
+                                            <span><i class="far fa-file"></i> 2.4 MB</span>
+                                        </div>
+                                        <div class="document-actions">
+                                            <a href="#" class="btn btn-primary btn-small">
+                                                <i class="fas fa-download"></i> Скачать
+                                            </a>
+                                            <a href="#" class="btn btn-secondary btn-small">
+                                                <i class="fas fa-eye"></i> Просмотр
+                                            </a>
+                                        </div>
+                                    </article>
+                                    
+                                    <article class="document-card">
+                                        <div class="document-header">
+                                            <h4 class="document-title">Учебный план 2024-2025</h4>
+                                            <span class="document-type">PDF</span>
+                                        </div>
+                                        <p class="document-description">Расписание дисциплин по семестрам для очной формы обучения</p>
+                                        <div class="document-meta">
+                                            <span><i class="far fa-calendar"></i> 20.08.2024</span>
+                                            <span><i class="far fa-file"></i> 1.8 MB</span>
+                                        </div>
+                                        <div class="document-actions">
+                                            <a href="#" class="btn btn-primary btn-small">
+                                                <i class="fas fa-download"></i> Скачать
+                                            </a>
+                                            <a href="#" class="btn btn-secondary btn-small">
+                                                <i class="fas fa-eye"></i> Просмотр
+                                            </a>
+                                        </div>
+                                    </article>
+                                    
+                                    <article class="document-card">
+                                        <div class="document-header">
+                                            <h4 class="document-title">Аннотации рабочих программ</h4>
+                                            <span class="document-type">ZIP</span>
+                                        </div>
+                                        <p class="document-description">Аннотации всех рабочих программ дисциплин 2024-2025 учебного года</p>
+                                        <div class="document-meta">
+                                            <span><i class="far fa-calendar"></i> 25.08.2024</span>
+                                            <span><i class="far fa-file"></i> 4.2 MB</span>
+                                        </div>
+                                        <div class="document-actions">
+                                            <a href="#" class="btn btn-primary btn-small">
+                                                <i class="fas fa-download"></i> Скачать
+                                            </a>
+                                            <a href="#" class="btn btn-secondary btn-small">
+                                                <i class="fas fa-eye"></i> Просмотр
+                                            </a>
+                                        </div>
+                                    </article>
+                                    
+                                    <article class="document-card">
+                                        <div class="document-header">
+                                            <h4 class="document-title">Календарный учебный график</h4>
+                                            <span class="document-type">PDF</span>
+                                        </div>
+                                        <p class="document-description">График учебного процесса на 2024-2025 учебный год</p>
+                                        <div class="document-meta">
+                                            <span><i class="far fa-calendar"></i> 10.08.2024</span>
+                                            <span><i class="far fa-file"></i> 0.8 MB</span>
+                                        </div>
+                                        <div class="document-actions">
+                                            <a href="#" class="btn btn-primary btn-small">
+                                                <i class="fas fa-download"></i> Скачать
+                                            </a>
+                                            <a href="#" class="btn btn-secondary btn-small">
+                                                <i class="fas fa-eye"></i> Просмотр
+                                            </a>
+                                        </div>
+                                    </article>
+                                </div>
+                                
+                                <!-- Документы 2023 года (скрыты по умолчанию) -->
+                                <div id="docs-2023" class="documents-list hidden">
+                                    <article class="document-card">
+                                        <div class="document-header">
+                                            <h4 class="document-title">Учебный план 2023-2024</h4>
+                                            <span class="document-type">PDF</span>
+                                        </div>
+                                        <p class="document-description">Расписание дисциплин для очной формы обучения (архив)</p>
+                                        <div class="document-meta">
+                                            <span><i class="far fa-calendar"></i> 20.08.2023</span>
+                                            <span><i class="far fa-file"></i> 1.7 MB</span>
+                                        </div>
+                                        <div class="document-actions">
+                                            <a href="#" class="btn btn-primary btn-small">
+                                                <i class="fas fa-download"></i> Скачать
+                                            </a>
+                                        </div>
+                                    </article>
+                                    
+                                    <article class="document-card">
+                                        <div class="document-header">
+                                            <h4 class="document-title">Календарный график 2023-2024</h4>
+                                            <span class="document-type">PDF</span>
+                                        </div>
+                                        <p class="document-description">График учебного процесса (архив)</p>
+                                        <div class="document-meta">
+                                            <span><i class="far fa-calendar"></i> 10.08.2023</span>
+                                            <span><i class="far fa-file"></i> 0.7 MB</span>
+                                        </div>
+                                        <div class="document-actions">
+                                            <a href="#" class="btn btn-primary btn-small">
+                                                <i class="fas fa-download"></i> Скачать
+                                            </a>
+                                        </div>
+                                    </article>
+                                </div>
+                                
+                                <!-- Документы 2022 года (скрыты по умолчанию) -->
+                                <div id="docs-2022" class="documents-list hidden">
+                                    <article class="document-card">
+                                        <div class="document-header">
+                                            <h4 class="document-title">Учебный план 2022-2023</h4>
+                                            <span class="document-type">PDF</span>
+                                        </div>
+                                        <p class="document-description">Архивный учебный план</p>
+                                        <div class="document-meta">
+                                            <span><i class="far fa-calendar"></i> 20.08.2022</span>
+                                            <span><i class="far fa-file"></i> 1.6 MB</span>
+                                        </div>
+                                        <div class="document-actions">
+                                            <a href="#" class="btn btn-primary btn-small">
+                                                <i class="fas fa-download"></i> Скачать
+                                            </a>
+                                        </div>
+                                    </article>
+                                </div>
+                            </div>
+                            
+                            <div class="documents-section" style="margin-top: 3rem;">
+                                <h3>Нормативные документы</h3>
+                                <div class="documents-list">
+                                    <article class="document-card">
+                                        <div class="document-header">
+                                            <h4 class="document-title">Федеральный государственный стандарт</h4>
+                                            <span class="document-type">PDF</span>
+                                        </div>
+                                        <p class="document-description">ФГОС ВО по направлению 07.03.01 "Архитектура"</p>
+                                        <div class="document-meta">
+                                            <span><i class="far fa-calendar"></i> 01.09.2022</span>
+                                            <span><i class="far fa-file"></i> 1.1 MB</span>
+                                        </div>
+                                        <div class="document-actions">
+                                            <a href="#" class="btn btn-primary btn-small">
+                                                <i class="fas fa-download"></i> Скачать
+                                            </a>
+                                        </div>
+                                    </article>
+                                    
+                                    <article class="document-card">
+                                        <div class="document-header">
+                                            <h4 class="document-title">Лицензия и аккредитация</h4>
+                                            <span class="document-type">PDF</span>
+                                        </div>
+                                        <p class="document-description">Документы о государственной аккредитации программы</p>
+                                        <div class="document-meta">
+                                            <span><i class="far fa-calendar"></i> 15.06.2023</span>
+                                            <span><i class="far fa-file"></i> 3.2 MB</span>
+                                        </div>
+                                        <div class="document-actions">
+                                            <a href="#" class="btn btn-primary btn-small">
+                                                <i class="fas fa-download"></i> Скачать
+                                            </a>
+                                        </div>
+                                    </article>
+                                </div>
+                            </div>
+                        </section>
+                        
+                        <!-- УЧЕБНЫЙ ПЛАН -->
+                        <section id="curriculum" class="tab-pane">
+                            <h2>Учебный план программы</h2>
+                            <p>Структура и содержание учебного плана по направлению 07.03.01 "Архитектура"</p>
+                            
+                            <div class="documents-tabs" style="margin-top: 2rem;">
+                                <button class="doc-tab active" onclick="filterCurriculum('all')">Весь план</button>
+                                <button class="doc-tab" onclick="filterCurriculum('1')">1 курс</button>
+                                <button class="doc-tab" onclick="filterCurriculum('2')">2 курс</button>
+                                <button class="doc-tab" onclick="filterCurriculum('3')">3 курс</button>
+                                <button class="doc-tab" onclick="filterCurriculum('4')">4 курс</button>
+                            </div>
+                            
+                            <table class="curriculum-table" id="curriculumTable">
+                                <thead>
+                                    <tr>
+                                        <th>Семестр</th>
+                                        <th>Дисциплина</th>
+                                        <th>Зачетные единицы</th>
+                                        <th>Форма контроля</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-semester="1">
+                                        <td><span class="semester-badge">1 семестр</span></td>
+                                        <td>История архитектуры</td>
+                                        <td>4</td>
+                                        <td>Экзамен</td>
+                                    </tr>
+                                    <tr data-semester="1">
+                                        <td><span class="semester-badge">1 семестр</span></td>
+                                        <td>Начертательная геометрия</td>
+                                        <td>5</td>
+                                        <td>Экзамен</td>
+                                    </tr>
+                                    <tr data-semester="1">
+                                        <td><span class="semester-badge">1 семестр</span></td>
+                                        <td>Архитектурная графика</td>
+                                        <td>6</td>
+                                        <td>Зачет</td>
+                                    </tr>
+                                    <tr data-semester="2">
+                                        <td><span class="semester-badge">2 семестр</span></td>
+                                        <td>Архитектурное проектирование</td>
+                                        <td>6</td>
+                                        <td>Экзамен</td>
+                                    </tr>
+                                    <tr data-semester="2">
+                                        <td><span class="semester-badge">2 семестр</span></td>
+                                        <td>Строительные конструкции</td>
+                                        <td>5</td>
+                                        <td>Экзамен</td>
+                                    </tr>
+                                    <tr data-semester="3">
+                                        <td><span class="semester-badge">3 семестр</span></td>
+                                        <td>Компьютерные технологии в архитектуре</td>
+                                        <td>4</td>
+                                        <td>Зачет</td>
+                                    </tr>
+                                    <tr data-semester="3">
+                                        <td><span class="semester-badge">3 семестр</span></td>
+                                        <td>Градостроительство</td>
+                                        <td>5</td>
+                                        <td>Экзамен</td>
+                                    </tr>
+                                    <tr data-semester="4">
+                                        <td><span class="semester-badge">4 семестр</span></td>
+                                        <td>Ландшафтная архитектура</td>
+                                        <td>4</td>
+                                        <td>Экзамен</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <div style="margin-top: 2rem; padding: 1.5rem; background-color: var(--light-gray); border-radius: var(--border-radius);">
+                                <h4><i class="fas fa-info-circle"></i> Общая информация об учебном плане</h4>
+                                <ul>
+                                    <li><strong>Общая трудоемкость:</strong> 240 зачетных единиц</li>
+                                    <li><strong>Базовая часть:</strong> 150 зачетных единиц</li>
+                                    <li><strong>Вариативная часть:</strong> 90 зачетных единиц</li>
+                                    <li><strong>Практики:</strong> 15 зачетных единиц</li>
+                                    <li><strong>Государственная итоговая аттестация:</strong> 9 зачетных единиц</li>
+                                </ul>
+                            </div>
+                        </section>
+                        
+                        <!-- КАРЬЕРА -->
+                        <section id="career" class="tab-pane">
+                            <h2>Карьерные перспективы выпускников</h2>
+                            <p>Выпускники программы "Архитектура" востребованы в различных сферах:</p>
+                            
+                            <div class="info-grid">
+                                <div class="info-section">
+                                    <h4><i class="fas fa-building"></i> Проектные организации</h4>
+                                    <ul>
+                                        <li>Архитектурные бюро</li>
+                                        <li>Градостроительные институты</li>
+                                        <li>Проектные институты</li>
+                                        <li>Дизайн-студии</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="info-section">
+                                    <h4><i class="fas fa-hard-hat"></i> Строительные компании</h4>
+                                    <ul>
+                                        <li>Генеральные подрядчики</li>
+                                        <li>Девелоперские компании</li>
+                                        <li>Технический надзор</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="info-section">
+                                    <h4><i class="fas fa-landmark"></i> Государственные структуры</h4>
+                                    <ul>
+                                        <li>Архитектурные комитеты</li>
+                                        <li>Управления архитектуры</li>
+                                        <li>Градостроительные советы</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="info-section">
+                                    <h4><i class="fas fa-chart-line"></i> Статистика трудоустройства</h4>
+                                    <ul>
+                                        <li>94% выпускников трудоустраиваются в первый год</li>
+                                        <li>Средняя зарплата выпускника: 65 000 ₽</li>
+                                        <li>Через 3 года: 85% занимают руководящие должности</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+                        
+                        <!-- ПРЕПОДАВАТЕЛИ -->
+                        <section id="teachers" class="tab-pane">
+                            <h2>Преподавательский состав</h2>
+                            <p>Программу ведут высококвалифицированные преподаватели с большим опытом работы:</p>
+                            
+                            <div class="documents-list">
+                                <article class="document-card">
+                                    <div class="document-header">
+                                        <h4 class="document-title">Иванов Петр Сергеевич</h4>
+                                        <span class="document-type">Доктор наук</span>
+                                    </div>
+                                    <p class="document-description">Заведующий кафедрой архитектуры, автор 45 научных работ, опыт работы - 25 лет.</p>
+                                    <div class="document-meta">
+                                        <span><i class="fas fa-book"></i> Читает курсы: Архитектурное проектирование, История архитектуры</span>
+                                    </div>
+                                </article>
+                                
+                                <article class="document-card">
+                                    <div class="document-header">
+                                        <h4 class="document-title">Смирнова Ольга Владимировна</h4>
+                                        <span class="document-type">Кандидат наук</span>
+                                    </div>
+                                    <p class="document-description">Доцент кафедры, практикующий архитектор, член Союза архитекторов России.</p>
+                                    <div class="document-meta">
+                                        <span><i class="fas fa-book"></i> Читает курсы: Градостроительство, Ландшафтная архитектура</span>
+                                    </div>
+                                </article>
+                                
+                                <article class="document-card">
+                                    <div class="document-header">
+                                        <h4 class="document-title">Петров Алексей Николаевич</h4>
+                                        <span class="document-type">Кандидат наук</span>
+                                    </div>
+                                    <p class="document-description">Эксперт в области BIM-технологий, автор учебных пособий по компьютерному проектированию.</p>
+                                    <div class="document-meta">
+                                        <span><i class="fas fa-book"></i> Читает курсы: Компьютерные технологии в архитектуре, BIM-проектирование</span>
+                                    </div>
+                                </article>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- БОКОВАЯ ПАНЕЛЬ -->
+            <aside class="sidebar">
+                <div class="sidebar-card">
+                    <h3><i class="fas fa-phone-alt"></i> Контакты</h3>
+                    <ul class="contact-list">
+                        <li>
+                            <div class="contact-name">Иванов Петр Сергеевич</div>
+                            <div class="contact-role">Декан факультета</div>
+                            <div class="contact-info">
+                                <i class="fas fa-phone"></i> +7 (473) 255-35-11
+                            </div>
+                            <div class="contact-info">
+                                <i class="fas fa-envelope"></i> dean@vgasu.vrn.ru
+                            </div>
+                        </li>
+                        <li>
+                            <div class="contact-name">Смирнова Ольга Владимировна</div>
+                            <div class="contact-role">Ответственный за программу</div>
+                            <div class="contact-info">
+                                <i class="fas fa-phone"></i> +7 (473) 255-35-22
+                            </div>
+                            <div class="contact-info">
+                                <i class="fas fa-envelope"></i> smirnova@vgasu.vrn.ru
+                            </div>
+                        </li>
+                        <li>
+                            <div class="contact-name">Приемная комиссия</div>
+                            <div class="contact-info">
+                                <i class="fas fa-phone"></i> +7 (473) 255-35-00
+                            </div>
+                            <div class="contact-info">
+                                <i class="fas fa-envelope"></i> priem@vgasu.vrn.ru
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-card">
+                    <h3><i class="fas fa-chart-line"></i> Статистика программы</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">94%</div>
+                            <div class="stat-label">Трудоустройство</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">25</div>
+                            <div class="stat-label">Бюджетных мест</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.7</div>
+                            <div class="stat-label">Средний балл ЕГЭ</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">15</div>
+                            <div class="stat-label">Преподавателей</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-card">
+                    <h3><i class="fas fa-calendar-check"></i> Ближайшие события</h3>
+                    <ul class="contact-list">
+                        <li>
+                            <div class="contact-name">День открытых дверей</div>
+                            <div class="contact-info">
+                                <i class="far fa-calendar"></i> 15 апреля 2024
+                            </div>
+                        </li>
+                        <li>
+                            <div class="contact-name">Начало приемной кампании</div>
+                            <div class="contact-info">
+                                <i class="far fa-calendar"></i> 20 июня 2024
+                            </div>
+                        </li>
+                        <li>
+                            <div class="contact-name">Конкурс архитектурных проектов</div>
+                            <div class="contact-info">
+                                <i class="far fa-calendar"></i> 10 мая 2024
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-card">
+                    <h3><i class="fas fa-map-marker-alt"></i> Расположение</h3>
+                    <p>Факультет архитектуры и градостроительства</p>
+                    <p><i class="fas fa-building"></i> Корпус А, 3 этаж, аудитории 301-315</p>
+                    <p><i class="fas fa-clock"></i> Пн-Пт: 9:00-18:00</p>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- ФУТЕР -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Контакты</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> г. Воронеж, ул. 20-летия Октября, 84</li>
+                        <li><i class="fas fa-phone"></i> +7 (473) 255-35-35</li>
+                        <li><i class="fas fa-envelope"></i> info@vgasu.vrn.ru</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Быстрые ссылки</h3>
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-list"></i> Все образовательные программы</a></li>
+                        <li><a href="#"><i class="fas fa-user-graduate"></i> Приемная комиссия</a></li>
+                        <li><a href="#"><i class="fas fa-calendar-alt"></i> Расписание занятий</a></li>
+                        <li><a href="#"><i class="fas fa-book"></i> Электронная библиотека</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Подписывайтесь на нас</h3>
+                    <ul>
+                        <li><a href="#"><i class="fab fa-vk"></i> ВКонтакте</a></li>
+                        <li><a href="#"><i class="fab fa-telegram"></i> Telegram</a></li>
+                        <li><a href="#"><i class="fab fa-youtube"></i> YouTube</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2024 Воронежский государственный технический университет. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+<script src="js/program-detail.js"></script>
+<script src="js/notifications.js"></script>
+</body>
+</html>
