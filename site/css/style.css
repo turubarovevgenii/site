@@ -991,3 +991,475 @@ footer {
     background-color: rgba(108, 117, 125, 0.1);
     color: var(--dark-gray);
 }
+
+/* === ОБНОВЛЕННЫЕ СТИЛИ ДЛЯ АДАПТИВНОСТИ === */
+
+/* Улучшенная адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .page-header {
+        padding: 1rem 0;
+    }
+    
+    .page-title {
+        font-size: 1.5rem;
+        line-height: 1.3;
+        margin-bottom: 0.75rem;
+    }
+    
+    .page-subtitle {
+        font-size: 1rem;
+        line-height: 1.4;
+    }
+    
+    /* ФИЛЬТРЫ - УЛУЧШЕННАЯ АДАПТИВНОСТЬ */
+    .filters-section {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .filters-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .filters-title {
+        font-size: 1.1rem;
+    }
+    
+    .filters-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .filter-group {
+        margin-bottom: 0.5rem;
+    }
+    
+    .filter-options {
+        gap: 0.5rem;
+    }
+    
+    .filter-option {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+        flex: 1;
+        min-width: calc(50% - 0.5rem);
+        text-align: center;
+    }
+    
+    .filter-input,
+    .filter-select {
+        padding: 0.7rem;
+        font-size: 0.95rem;
+    }
+    
+    .search-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .search-actions .btn {
+        width: 100%;
+        justify-content: center;
+        padding: 0.8rem;
+    }
+    
+    /* ПАНЕЛЬ УПРАВЛЕНИЯ РЕЗУЛЬТАТАМИ */
+    .results-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        padding: 1rem;
+    }
+    
+    .results-count {
+        font-size: 0.95rem;
+        text-align: center;
+    }
+    
+    .sort-options {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .sort-select {
+        flex: 1;
+        max-width: 70%;
+    }
+    
+    .view-options {
+        justify-content: center;
+    }
+    
+    /* СЕТКА ПРОГРАММ - АДАПТИВНАЯ */
+    .programs-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .program-card {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    .program-header {
+        padding: 1rem 1rem 0.5rem;
+    }
+    
+    .program-code {
+        font-size: 0.8rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .program-meta {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .program-level {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.6rem;
+    }
+    
+    .program-form {
+        font-size: 0.75rem;
+    }
+    
+    .program-body {
+        padding: 1rem;
+    }
+    
+    .program-title {
+        font-size: 1.1rem;
+        line-height: 1.3;
+        margin-bottom: 0.5rem;
+    }
+    
+    .program-profile {
+        font-size: 0.9rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .program-faculty {
+        font-size: 0.85rem;
+        padding-bottom: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .program-details {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    
+    .detail-item {
+        min-height: auto;
+    }
+    
+    .detail-label {
+        font-size: 0.75rem;
+        margin-bottom: 0.1rem;
+    }
+    
+    .detail-value {
+        font-size: 0.9rem;
+        word-break: break-word;
+    }
+    
+    .program-description {
+        font-size: 0.85rem;
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin-bottom: 0.5rem;
+    }
+    
+    .program-footer {
+        padding: 0.75rem 1rem;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .program-footer .btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .program-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .btn-icon {
+        width: 2.2rem;
+        height: 2.2rem;
+        font-size: 0.9rem;
+    }
+    
+    /* ПАГИНАЦИЯ */
+    .pagination {
+        margin: 2rem 0;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+    
+    .page-btn {
+        width: 2.2rem;
+        height: 2.2rem;
+        font-size: 0.9rem;
+    }
+    
+    /* ХЛЕБНЫЕ КРОШКИ */
+    .breadcrumbs {
+        padding: 0.75rem 0;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    
+    .breadcrumbs ol {
+        font-size: 0.85rem;
+    }
+    
+    /* ЗАГОЛОВОК СТРАНИЦЫ */
+    .page-header {
+        padding: 1.5rem 0 1rem;
+    }
+    
+    .page-title {
+        font-size: 1.4rem;
+    }
+    
+    .page-subtitle {
+        font-size: 0.95rem;
+    }
+}
+
+/* МОБИЛЬНЫЕ УСТРОЙСТВА (до 480px) */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 12px;
+    }
+    
+    /* ФИЛЬТРЫ */
+    .filters-section {
+        padding: 0.75rem;
+    }
+    
+    .filter-options {
+        flex-wrap: wrap;
+    }
+    
+    .filter-option {
+        min-width: calc(50% - 0.25rem);
+        font-size: 0.8rem;
+        padding: 0.35rem 0.5rem;
+    }
+    
+    /* КАРТОЧКИ ПРОГРАММ */
+    .program-card {
+        margin-bottom: 0.5rem;
+    }
+    
+    .program-details {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+    
+    .detail-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.3rem 0;
+    }
+    
+    .detail-label {
+        margin-bottom: 0;
+        font-size: 0.8rem;
+        flex: 1;
+    }
+    
+    .detail-value {
+        font-size: 0.85rem;
+        text-align: right;
+        flex: 1;
+    }
+    
+    /* ВИД СПИСКОМ */
+    .programs-grid[style*="gridTemplateColumns: 1fr"] .program-card {
+        flex-direction: column;
+    }
+    
+    /* КНОПКИ */
+    .btn {
+        padding: 0.7rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .btn-small {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+    
+    /* ПАГИНАЦИЯ */
+    .pagination {
+        gap: 0.2rem;
+    }
+    
+    .page-btn {
+        width: 2rem;
+        height: 2rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* ПЛАНШЕТЫ (от 769px до 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .programs-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    .filters-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .container {
+        padding: 0 20px;
+    }
+}
+
+/* ОЧЕНЬ МАЛЕНЬКИЕ УСТРОЙСТВА (до 360px) */
+@media (max-width: 360px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .program-title {
+        font-size: 1rem;
+    }
+    
+    .program-profile {
+        font-size: 0.8rem;
+    }
+    
+    .filter-option {
+        min-width: 100%;
+    }
+    
+    .program-details {
+        font-size: 0.8rem;
+    }
+}
+
+/* УЛУЧШЕНИЯ ДЛЯ ГОРИЗОНТАЛЬНОЙ ОРИЕНТАЦИИ */
+@media (max-height: 500px) and (orientation: landscape) {
+    .filters-section {
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    
+    .filter-options {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .programs-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* СВАЙП-ДРУЖЕСТВЕННЫЙ ДИЗАЙН */
+.program-card {
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+/* УЛУЧШЕНИЯ ДЛЯ TOUCH УСТРОЙСТВ */
+@media (hover: none) and (pointer: coarse) {
+    .btn,
+    .btn-icon,
+    .filter-option,
+    .tab-btn,
+    .page-btn {
+        min-height: 44px; /* Минимальный размер для пальцев */
+        min-width: 44px;
+    }
+    
+    .btn-icon {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .filter-input,
+    .filter-select {
+        min-height: 44px;
+        font-size: 16px; /* Предотвращает масштабирование на iOS */
+    }
+    
+    /* Увеличиваем отступы для touch устройств */
+    .program-card {
+        padding-bottom: 5px;
+    }
+    
+    .program-footer {
+        padding: 0.75rem;
+    }
+}
+
+/* АНИМАЦИИ ДЛЯ МОБИЛЬНЫХ */
+@media (max-width: 768px) {
+    .program-card {
+        transition: transform 0.2s ease;
+    }
+    
+    .program-card:active {
+        transform: scale(0.98);
+    }
+    
+    /* Плавная прокрутка для фильтров */
+    .filter-options {
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE и Edge */
+    }
+    
+    .filter-options::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+}
+
+/* УЛУЧШЕНИЯ ДЛЯ ТЕМНОЙ ТЕМЫ (если поддерживается) */
+@media (prefers-color-scheme: dark) {
+    .program-card {
+        background-color: #1e1e1e;
+        color: #e0e0e0;
+    }
+    
+    .detail-label {
+        color: #aaa;
+    }
+    
+    .program-faculty {
+        color: #4dabf7;
+    }
+}
+
+/* ФИКС ДЛЯ IOS SAFARI */
+@supports (-webkit-touch-callout: none) {
+    .program-card {
+        -webkit-backface-visibility: hidden;
+    }
+    
+    .filter-input,
+    .filter-select {
+        font-size: 16px !important;
+    }
+}

@@ -846,3 +846,90 @@ document.addEventListener('DOMContentLoaded', function() {
 if (typeof window !== 'undefined') {
     window.programsManager = programsManager;
 }
+
+
+class MobileOptimizer {
+    constructor() {
+        this.isMobile = this.checkMobile();
+        this.init();
+    }
+    
+    checkMobile() {
+        return window.innerWidth <= 768;
+    }
+    
+    init() {
+        // Оптимизация для мобильных устройств
+        if (this.isMobile) {
+            this.optimizeForMobile();
+        }
+        
+        // Слушаем изменение размера окна
+        window.addEventListener('resize', () => {
+            const wasMobile = this.isMobile;
+            this.isMobile = this.checkMobile();
+            
+            if (wasMobile !== this.isMobile) {
+                location.reload(); // Перезагружаем для применения стилей
+            }
+        });
+    }
+    
+    optimizeForMobile() {
+        // Увеличиваем размеры кликабельных элементов
+        this.increaseTouchTargets();
+        
+        // Улучшаем прокрутку
+        this.improveScrolling();
+        
+        // Предотвращаем зум при фокусе
+        this.preventZoomOnFocus();
+    }
+    
+    increaseTouchTargets() {
+        // Увеличиваем минимальную высоту для кнопок фильтров
+        const style = document.createElement('style');
+        style.textContent = `
+            @media (max-width: 768px) {
+                .filter-option, .btn, .btn-icon, .page-btn {
+                    min-height: 44px !important;
+                    min-width: 44px !important;
+                }
+                
+                .program-card {
+                    margin-bottom: 12px;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    improveScrolling() {
+        // Плавная прокрутка для якорных ссылок
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    e.preventDefault();
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    }
+    
+    preventZoomOnFocus() {
+        // Предотвращаем зум при фокусе на инпуты в iOS
+        document.addEventListener('touchstart', function() {}, {passive: true});
+    }
+}
+
+// Инициализируем при загрузке DOM
+document.addEventListener('DOMContentLoaded', () => {
+    new MobileOptimizer();
+});
