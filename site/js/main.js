@@ -234,17 +234,6 @@ populateFacultyFilter() {
             let mainData = [];
             let extendedData = [];
             
-            // Загружаем основной файл с деталями
-            try {
-                const mainResponse = await fetch('js/programs.json');
-                if (mainResponse.ok) {
-                    const mainJson = await mainResponse.json();
-                    mainData = mainJson.programs || [];
-                    console.log(`✅ Загружено ${mainData.length} программ из основного файла`);
-                }
-            } catch (error) {
-                console.warn('⚠️ Основной файл programs.json не доступен:', error);
-            }
             
             // Загружаем расширенный файл со всеми программами
             try {
