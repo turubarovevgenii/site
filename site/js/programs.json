@@ -18,7 +18,6 @@
       "budgetPlaces": 25,
       "price": 150000,
       "description": "Заведующий кафедрой теории и практики архитектурного проектирования...",
-      "link": "https://cchgeu.ru/education/programms/arhi-3%2B%2B/",
       "hasDetails": true,
       "updated": "2024-01-15"
     },
@@ -36,7 +35,6 @@
       "budgetPlaces": 20,
       "price": 140000,
       "description": "Заведующий кафедрой композиции и сохранения архитектурно-градостроительного наследия...",
-      "link": "https://cchgeu.ru/education/programms/rran-3%2B%2B/",
       "hasDetails": true,
       "updated": "2024-01-15"
     },
@@ -54,7 +52,6 @@
       "budgetPlaces": 18,
       "price": 145000,
       "description": "В реализации образовательной программы задействовано более 40 преподавателей...",
-      "link": "https://cchgeu.ru/education/programms/das-3%2B%2B/",
       "hasDetails": true,
       "updated": "2024-01-15"
     },
@@ -72,7 +69,6 @@
       "budgetPlaces": 22,
       "price": 135000,
       "description": "Целью образовательной программы кафедры Градостроительства является подготовка конкурентоспособных бакалавров...",
-      "link": "https://cchgeu.ru/education/programms/gp-3%2B%2B/",
       "hasDetails": true,
       "updated": "2024-01-15"
     },
@@ -90,9 +86,24 @@
       "budgetPlaces": 30,
       "price": 125000,
       "description": "Доцент кафедры проектирования автомобильных дорог и мостов...",
-      "link": "https://cchgeu.ru/education/programms/amt-3%2B%2B/",
       "hasDetails": true,
       "updated": "2024-01-15"
-    }
+    },
+    {
+  "id": 6,
+  "code": "08.02.01",
+  "title": "Строительство и эксплуатация зданий и сооружений",
+  "profile": "Гражданское и промышленное строительство",
+  "education_level": "Среднее профессиональное образование",
+  "level": "secondary",
+  "faculty": "Строительно-политехнический колледж",
+  "form": "Очная",
+  "duration": "3 года 10 месяцев",
+  "budgetPlaces": 40,
+  "price": 80000,
+  "description": "Подготовка специалистов среднего звена для работы в строительных организациях...",
+  "link": "program-detail.html?id=6&code=08.02.01",
+  "hasDetails": true
+}
   ]
 }

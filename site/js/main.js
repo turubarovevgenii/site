@@ -25,22 +25,138 @@ class ProgramsManager {
         if (lvl.includes('магистр') || lvl.includes('master')) return 'master';
         if (lvl.includes('специалитет')) return 'specialist';
         if (lvl.includes('аспирант') || lvl.includes('postgraduate')) return 'postgraduate';
+        if (lvl.includes('среднее профессиональное') || lvl.includes('колледж') || lvl.includes('secondary')) return 'secondary';
         return 'bachelor';
     }
-
+// Функция для объединения данных из двух источников с подстановкой прочерков
+mergeProgramsData(mainData, extendedData) {
+    // Создаем Map для быстрого поиска программ по коду и названию
+    const mainProgramsMap = new Map();
+    
+    // Индексируем основные программы по коду и названию
+    mainData.forEach(program => {
+        const key = `${program.code}_${program.title}`;
+        mainProgramsMap.set(key, program);
+    });
+    
+    const mergedPrograms = [];
+    const processedCodes = new Set();
+    
+    // Обрабатываем расширенные данные (все программы)
+    extendedData.forEach(extProgram => {
+        // Извлекаем основное название и профиль из full_name
+        const fullName = extProgram.full_name || extProgram.name;
+        let title, profile;
+        
+        if (fullName.includes('Профиль')) {
+            const parts = fullName.split('Профиль');
+            title = parts[0].replace(extProgram.code, '').trim();
+            profile = parts[1].trim().replace(/["«»]/g, '');
+        } else if (fullName.includes('Специализация')) {
+            const parts = fullName.split('Специализация');
+            title = parts[0].replace(extProgram.code, '').trim();
+            profile = parts[1].trim().replace(/["«»]/g, '');
+        } else {
+            title = fullName.replace(extProgram.code, '').trim();
+            profile = fullName.replace(extProgram.code, '').trim();
+        }
+        
+        // Формируем ключ для поиска в основных данных
+        const searchKey = `${extProgram.code}_${title}`;
+        const mainProgram = mainProgramsMap.get(searchKey);
+        
+        // Создаем объединенную программу
+        const mergedProgram = {
+            // Базовые данные из расширенного источника
+            id: extProgram.id || extProgram.number,
+            code: extProgram.code,
+            title: title,
+            profile: profile,
+            full_name: fullName,
+            
+            // Данные из основного источника или значения по умолчанию
+            education_level: extProgram.education_level || extProgram.category || '—',
+            level: this.normalizeLevel(extProgram.education_level || extProgram.category),
+            faculty: extProgram.faculty || '—',
+            form: (mainProgram && mainProgram.form) || '—',
+            duration: (mainProgram && mainProgram.duration) || '—',
+            budgetPlaces: (mainProgram && mainProgram.budgetPlaces) || 0,
+            price: (mainProgram && mainProgram.price) || 0,
+            description: (mainProgram && mainProgram.description) || 'Подробная информация о программе будет доступна позже.',
+            
+            // Ссылка
+            link: extProgram.link || (mainProgram && mainProgram.link) || '#',
+            
+            // Флаги
+            hasDetails: !!mainProgram,
+            updated: (mainProgram && mainProgram.updated) || '2024-01-15',
+            
+            // Добавляем source для отладки
+            source: mainProgram ? 'merged' : 'extended_only'
+        };
+        
+        mergedPrograms.push(mergedProgram);
+        processedCodes.add(extProgram.code);
+    });
+    
+    // Добавляем программы из основного источника, которых нет в расширенном
+    mainData.forEach(mainProgram => {
+        const alreadyIncluded = mergedPrograms.some(p => 
+            p.code === mainProgram.code && p.title === mainProgram.title
+        );
+        
+        if (!alreadyIncluded) {
+            mergedPrograms.push({
+                ...mainProgram,
+                faculty: mainProgram.faculty || '—',
+                form: mainProgram.form || '—',
+                duration: mainProgram.duration || '—',
+                budgetPlaces: mainProgram.budgetPlaces || 0,
+                price: mainProgram.price || 0,
+                description: mainProgram.description || 'Подробная информация о программе будет доступна позже.',
+                link: mainProgram.link || '#',
+                source: 'main_only'
+            });
+        }
+    });
+    
+    console.log(`✅ Объединено программ: ${mergedPrograms.length}`);
+    console.log(`📊 Статистика: ${mergedPrograms.filter(p => p.hasDetails).length} с деталями, ${mergedPrograms.filter(p => !p.hasDetails).length} без деталей`);
+    
+    return mergedPrograms;
+}
     // Нормализация данных программ
-   normalizeProgramsData(programs) {
+   // Обновленный метод normalizeProgramsData для работы с объединенными данными
+normalizeProgramsData(programs) {
     return programs.map(program => ({
         ...program,
-        level: this.normalizeLevel(program.level || program.education_level),
-        formattedPrice: program.price ? 
+        // Убеждаемся, что все поля заполнены
+        level: program.level || this.normalizeLevel(program.education_level),
+        formattedPrice: program.price && program.price > 0 ? 
             `${program.price.toLocaleString('ru-RU')} ₽/год` : 
             'Уточняйте',
-        // ИЗМЕНЕНИЕ ЗДЕСЬ - ссылка на новую страницу подробностей
-        detailUrl: `program-detail.html?id=${program.id}&code=${program.code}`,
-        searchText: `${program.code} ${program.title} ${program.profile || ''} ${program.faculty}`.toLowerCase(),
+        
+        // Создаем URL для детальной страницы
+        detailUrl: program.link && !program.link.includes('cchgeu.ru') 
+            ? program.link 
+            : `program-detail.html?id=${program.id}&code=${program.code}&title=${encodeURIComponent(program.title)}`,
+        
+        // Текст для поиска
+        searchText: [
+            program.code,
+            program.title,
+            program.profile || '',
+            program.faculty || '',
+            program.full_name || ''
+        ].join(' ').toLowerCase(),
+        
+        // Устанавливаем значения по умолчанию для пустых полей
         budgetPlaces: program.budgetPlaces || 0,
-        price: program.price || 0
+        price: program.price || 0,
+        duration: program.duration || '—',
+        form: program.form || '—',
+        faculty: program.faculty || '—',
+        description: program.description || 'Информация о программе находится в стадии обновления.'
     }));
 }
 
@@ -52,27 +168,45 @@ class ProgramsManager {
         }
     }
 
-    // Заполнение фильтра факультетов
-    populateFacultyFilter() {
-        const facultySelect = document.getElementById('facultyFilter');
-        if (!facultySelect) return;
-        
-        const currentValue = facultySelect.value;
-        facultySelect.innerHTML = '<option value="">Все факультеты</option>';
-        
-        const faculties = [...new Set(this.programs.map(p => p.faculty).filter(f => f))].sort();
-        
-        faculties.forEach(faculty => {
-            const option = document.createElement('option');
-            option.value = faculty;
-            option.textContent = faculty;
-            facultySelect.appendChild(option);
-        });
-        
-        if (currentValue) {
-            facultySelect.value = currentValue;
-        }
+   // Заполнение фильтра факультетов
+populateFacultyFilter() {
+    const facultySelect = document.getElementById('facultyFilter');
+    if (!facultySelect) return;
+    
+    const currentValue = facultySelect.value;
+    facultySelect.innerHTML = '<option value="">Все факультеты</option>';
+    
+    // ДОБАВЛЯЕМ ВСЕ НОВЫЕ ФАКУЛЬТЕТЫ
+    const allFaculties = [
+        'Подготовка научно-педагогических кадров в аспирантуре',
+        'Строительно-политехнический колледж',
+        'Факультет информационных технологий и компьютерной безопасности',
+        'Факультет инженерных систем и сооружений',
+        'Факультет экономики, менеджмента и инновационных технологий',
+        'Факультет радиотехники и электроники',
+        'Дорожно-транспортный факультет',
+        'Факультет машиностроения и аэрокосмической техники',
+        'Строительный факультет',
+        'Факультет энергетики и систем управления',
+        'Факультет архитектуры и градостроительства',
+        'Гуманитарный факультет'
+    ];
+    
+    // Добавляем факультеты из данных + все перечисленные
+    const dataFaculties = [...new Set(this.programs.map(p => p.faculty).filter(f => f))];
+    const allUniqueFaculties = [...new Set([...allFaculties, ...dataFaculties])].sort();
+    
+    allUniqueFaculties.forEach(faculty => {
+        const option = document.createElement('option');
+        option.value = faculty;
+        option.textContent = faculty;
+        facultySelect.appendChild(option);
+    });
+    
+    if (currentValue) {
+        facultySelect.value = currentValue;
     }
+}
 
     // Инициализация
     async init() {
@@ -90,54 +224,158 @@ class ProgramsManager {
     }
 
     // Загрузка данных из JSON
-    async loadProgramsData() {
-        showLoading(true);
+   async loadProgramsData(ignoreCache = false) {
+    showLoading(true);
+    
+    try {
+        const cachedData = localStorage.getItem('programsDataCache');
+        const cacheTime = localStorage.getItem('programsCacheTime');
         
-        try {
-            // Пробуем загрузить из кэша localStorage
-            const cachedData = localStorage.getItem('programsDataCache');
-            const cacheTime = localStorage.getItem('programsCacheTime');
+            let mainData = [];
+            let extendedData = [];
             
-            // Если кэш свежий (менее 24 часов), используем его
-            if (cachedData && cacheTime && (Date.now() - cacheTime < 86400000)) {
-                const data = JSON.parse(cachedData);
-                this.programs = this.normalizeProgramsData(data.programs || []);
-                console.log('✅ Данные загружены из кэша');
-            } else {
-                // Загружаем с сервера
-                const response = await fetch('js/programs.json');
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                
-                const data = await response.json();
-                this.programs = this.normalizeProgramsData(data.programs || []);
-                
-                // Сохраняем в кэш
-                localStorage.setItem('programsDataCache', JSON.stringify(data));
-                localStorage.setItem('programsCacheTime', Date.now());
-                console.log('✅ Данные загружены с сервера и закэшированы');
+            // Загружаем основной файл с деталями
+            try {
+                const mainResponse = await fetch('js/programs.json');
+                if (mainResponse.ok) {
+                    const mainJson = await mainResponse.json();
+                    mainData = mainJson.programs || [];
+                    console.log(`✅ Загружено ${mainData.length} программ из основного файла`);
+                }
+            } catch (error) {
+                console.warn('⚠️ Основной файл programs.json не доступен:', error);
             }
             
+            // Загружаем расширенный файл со всеми программами
+            try {
+                const extendedResponse = await fetch('js/cchgeu_programs.json');
+                if (extendedResponse.ok) {
+                    extendedData = await extendedResponse.json();
+                    console.log(`✅ Загружено ${extendedData.length} программ из расширенного файла`);
+                }
+            } catch (error) {
+                console.warn('⚠️ Расширенный файл cchgeu_programs.json не доступен:', error);
+            }
+            
+            // Объединяем данные
+            if (extendedData.length > 0) {
+                this.programs = this.normalizeProgramsData(
+                    this.mergeProgramsData(mainData, extendedData)
+                );
+            } else if (mainData.length > 0) {
+                this.programs = this.normalizeProgramsData(mainData);
+            } else {
+                throw new Error('Нет доступных данных о программах');
+            }
+            
+        
+        this.filteredPrograms = [...this.programs];
+        this.populateFacultyFilter();
+        this.updateProgramsCount(this.filteredPrograms.length);
+        
+    } catch (error) {
+        console.error('❌ Ошибка загрузки данных:', error);
+        // Резервный вариант
+        if (typeof programsData !== 'undefined') {
+            this.programs = this.normalizeProgramsData(programsData);
             this.filteredPrograms = [...this.programs];
             this.populateFacultyFilter();
             this.updateProgramsCount(this.filteredPrograms.length);
-            
-        } catch (error) {
-            console.error('❌ Ошибка загрузки данных:', error);
-            
-            // Пробуем загрузить статические данные как фолбэк
-            if (typeof programsData !== 'undefined') {
-                this.programs = this.normalizeProgramsData(programsData);
-                this.filteredPrograms = [...this.programs];
-                this.populateFacultyFilter();
-                this.updateProgramsCount(this.filteredPrograms.length);
-                console.log('✅ Использованы статические данные');
-            } else {
-                throw error;
-            }
-        } finally {
-            showLoading(false);
         }
+    } finally {
+        showLoading(false);
     }
+}
+
+
+// Вспомогательная функция для безопасного отображения данных в renderPrograms
+renderPrograms(programs) {
+    const programsGrid = document.getElementById('programsGrid');
+    
+    if (!programsGrid) return;
+    
+    if (programs.length === 0) {
+        programsGrid.innerHTML = this.getNoResultsHTML();
+        return;
+    }
+    
+    let programsHTML = '';
+    
+    programs.forEach(program => {
+        // Безопасное получение данных
+        const getSafeValue = (value, defaultValue = '—') => {
+            return value && value !== 'undefined' && value !== 'null' && value !== '0' ? value : defaultValue;
+        };
+        
+        const levelClass = `level-${program.level || 'bachelor'}`;
+        const levelText = program.level === 'bachelor' ? 'Бакалавриат' : 
+             program.level === 'master' ? 'Магистратура' : 
+             program.level === 'specialist' ? 'Специалитет' : 
+             program.level === 'postgraduate' ? 'Аспирантура' : 
+             program.level === 'secondary' ? 'Среднее профессиональное' : '—';
+        
+        programsHTML += `
+            <article class="program-card">
+                <div class="program-header">
+                    <div class="program-code">${getSafeValue(program.code, '—')}</div>
+                    <div class="program-meta">
+                        <span class="program-level ${levelClass}">${getSafeValue(levelText)}</span>
+                        <span class="program-form">${getSafeValue(program.form)}</span>
+                    </div>
+                </div>
+                
+                <div class="program-body">
+                    <h3 class="program-title">${getSafeValue(program.title, 'Название не указано')}</h3>
+                    <p class="program-profile">${getSafeValue(program.profile, '—')}</p>
+                    
+                    <div class="program-faculty">
+                        <i class="fas fa-university"></i>
+                        ${getSafeValue(program.faculty)}
+                    </div>
+                    
+                    <div class="program-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Срок обучения</span>
+                            <span class="detail-value">${getSafeValue(program.duration)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Бюджетных мест</span>
+                            <span class="detail-value">${program.budgetPlaces > 0 ? program.budgetPlaces : '—'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Стоимость</span>
+                            <span class="detail-value">${getSafeValue(program.formattedPrice)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Форма</span>
+                            <span class="detail-value">${getSafeValue(program.form)}</span>
+                        </div>
+                    </div>
+                    
+                    <p class="program-description">${getSafeValue(program.description?.substring(0, 150), 'Описание программы временно недоступно.')}</p>
+                </div>
+                
+                <div class="program-footer">
+                    <a href="${getSafeValue(program.detailUrl, '#')}" 
+                       class="btn btn-primary btn-small" 
+                       ${program.link?.includes('http') ? 'target="_blank"' : ''}>
+                        Подробнее
+                    </a>
+                    <div class="program-actions">
+                        <button class="btn-icon btn-compare" aria-label="Добавить к сравнению">
+                            <i class="fas fa-balance-scale"></i>
+                        </button>
+                        <button class="btn-icon btn-favorite" aria-label="Добавить в избранное">
+                            <i class="far fa-star"></i>
+                        </button>
+                    </div>
+                </div>
+            </article>
+        `;
+    });
+    
+    programsGrid.innerHTML = programsHTML;
+}
 
     // Настройка обработчиков событий
     setupEventListeners() {
@@ -329,8 +567,10 @@ class ProgramsManager {
         programs.forEach(program => {
             const levelClass = `level-${program.level}`;
             const levelText = program.level === 'bachelor' ? 'Бакалавриат' : 
-                             program.level === 'master' ? 'Магистратура' : 
-                             program.level === 'specialist' ? 'Специалитет' : 'Аспирантура';
+                 program.level === 'master' ? 'Магистратура' : 
+                 program.level === 'specialist' ? 'Специалитет' : 
+                 program.level === 'postgraduate' ? 'Аспирантура' : 
+                 program.level === 'secondary' ? 'Среднее профессиональное' : '—';
             
             programsHTML += `
                 <article class="program-card">
@@ -610,6 +850,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+
 
 // Экспорт для использования в консоли
 if (typeof window !== 'undefined') {

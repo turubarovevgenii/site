@@ -986,3 +986,8 @@ footer {
         display: none;
     }
 }
+
+.level-secondary {
+    background-color: rgba(108, 117, 125, 0.1);
+    color: var(--dark-gray);
+}
