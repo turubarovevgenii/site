@@ -126,6 +126,416 @@ function filterCurriculum(semester) {
     });
 }
 
+// ========== ФУНКЦИИ ДЛЯ УЧЕБНОГО ПЛАНА ==========
+
+// Функция для рендеринга таблицы учебного плана
+function renderCurriculumTable(curriculumData) {
+    console.log('Рендеринг таблицы с', curriculumData.length, 'элементами');
+    
+    // 1. Скрываем спиннер загрузки
+    const loadingElement = document.getElementById('curriculumLoading');
+    if (loadingElement) {
+        loadingElement.style.display = 'none';
+    }
+    
+    // 2. Показываем контейнер таблицы
+    const tableContainer = document.querySelector('.curriculum-table-container');
+    if (tableContainer) {
+        tableContainer.style.display = 'block';
+    }
+    
+    // 3. Находим тело таблицы
+    const tableBody = document.getElementById('curriculumTableBody');
+    if (!tableBody) {
+        console.error('Не найдено тело таблицы (curriculumTableBody)');
+        return;
+    }
+    
+    // 4. Очищаем таблицу перед заполнением
+    tableBody.innerHTML = '';
+    
+    // 5. Заполняем таблицу данными
+    curriculumData.forEach((item, index) => {
+        const assessmentClass = getAssessmentClass(item['Формы пром. атт.']);
+        const typeClass = getDisciplineTypeClass(item['Индекс']);
+        const typeName = getDisciplineTypeName(item['Индекс']);
+        const blockType = typeClass.replace('discipline-type ', '');
+        
+        // Форматируем семестры для отображения
+        const semesters = item['Семестры'] || '';
+        const formattedSemesters = formatSemestersDisplay(semesters);
+        
+        const row = document.createElement('tr');
+        row.className = 'curriculum-row';
+        row.setAttribute('data-block', blockType);
+        row.setAttribute('data-semesters', semesters);
+        
+        row.innerHTML = `
+            <td>
+                <span class="discipline-code">${item['Индекс'] || '—'}</span>
+            </td>
+            <td>
+                <strong>${item['Наименование'] || '—'}</strong>
+            </td>
+            <td>
+                <span class="exam-type ${assessmentClass}">
+                    ${item['Формы пром. атт.'] || '—'}
+                </span>
+            </td>
+            <td>
+                <span class="semester-badge">${formattedSemesters}</span>
+            </td>
+            <td>
+                <span class="discipline-type ${typeClass}">${typeName}</span>
+            </td>
+        `;
+        
+        tableBody.appendChild(row);
+    });
+    
+    console.log('Таблица успешно заполнена, строк:', curriculumData.length);
+    
+    // 6. Добавляем информацию о количестве дисциплин
+    addCurriculumStats(curriculumData.length);
+    
+    // 7. Инициализируем фильтры
+    initCurriculumFilters();
+}
+
+// Вспомогательная функция для форматирования отображения семестров
+function formatSemestersDisplay(semesters) {
+    if (!semesters) return '—';
+    
+    const semArray = semesters.split(',').map(s => s.trim());
+    
+    // Если много семестров подряд, показываем как диапазон
+    if (semArray.length > 3) {
+        // Проверяем, идут ли семестры по порядку
+        const sorted = [...semArray].sort((a, b) => a - b);
+        let isSequential = true;
+        
+        for (let i = 1; i < sorted.length; i++) {
+            if (parseInt(sorted[i]) !== parseInt(sorted[i-1]) + 1) {
+                isSequential = false;
+                break;
+            }
+        }
+        
+        if (isSequential) {
+            return `${sorted[0]}-${sorted[sorted.length - 1]}`;
+        }
+    }
+    
+    return semesters;
+}
+
+// Добавляем статистику
+function addCurriculumStats(count) {
+    const curriculumSection = document.getElementById('curriculum');
+    if (!curriculumSection) return;
+    
+    // Удаляем старую статистику, если есть
+    const oldStats = curriculumSection.querySelector('.curriculum-stats');
+    if (oldStats) {
+        oldStats.remove();
+    }
+    
+    const statsDiv = document.createElement('div');
+    statsDiv.className = 'curriculum-stats';
+    statsDiv.style.cssText = 'margin-top: 1rem; padding: 1rem; background-color: #f8f9fa; border-radius: 8px; font-size: 0.9rem;';
+    
+    // Подсчитываем количество по типам
+    const baseCount = document.querySelectorAll('.curriculum-row[data-block="base"]').length;
+    const variableCount = document.querySelectorAll('.curriculum-row[data-block="variable"]').length;
+    const practiceCount = document.querySelectorAll('.curriculum-row[data-block="practice"]').length;
+    const finalCount = document.querySelectorAll('.curriculum-row[data-block="final"]').length;
+    
+    statsDiv.innerHTML = `
+        <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;">
+            <div style="text-align: center;">
+                <div style="font-size: 1.2rem; font-weight: bold; color: #28a745;">${count}</div>
+                <div style="font-size: 0.8rem;">Всего дисциплин</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 1.2rem; font-weight: bold; color: #28a745;">${baseCount}</div>
+                <div style="font-size: 0.8rem;">Базовая часть</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 1.2rem; font-weight: bold; color: #0056b3;">${variableCount}</div>
+                <div style="font-size: 0.8rem;">Вариативная часть</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 1.2rem; font-weight: bold; color: #ffc107;">${practiceCount}</div>
+                <div style="font-size: 0.8rem;">Практики</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 1.2rem; font-weight: bold; color: #6c757d;">${finalCount}</div>
+                <div style="font-size: 0.8rem;">ГИА/ФТД</div>
+            </div>
+        </div>
+    `;
+    
+    curriculumSection.appendChild(statsDiv);
+}
+
+// ========== ИСПРАВЛЕННЫЕ ФУНКЦИИ ФИЛЬТРАЦИИ ==========
+
+// Глобальные переменные для хранения состояния фильтров
+let currentBlockFilter = 'all';
+let currentSemesterFilter = 'all';
+
+// Инициализация фильтров
+function initCurriculumFilters() {
+    console.log('Инициализация фильтров учебного плана');
+    
+    // Функция фильтрации по блоку
+    window.filterCurriculumByBlock = function(block) {
+        currentBlockFilter = block;
+        
+        // Обновляем активную кнопку
+        const buttons = document.querySelectorAll('.curriculum-filter-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        applyCombinedFilters();
+    };
+    
+    // Функция фильтрации по семестрам
+    window.filterCurriculumBySemester = function(semester) {
+        currentSemesterFilter = semester;
+        
+        // Обновляем активную кнопку
+        const buttons = document.querySelectorAll('.semester-filter-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        applyCombinedFilters();
+    };
+    
+    function applyCombinedFilters() {
+        const rows = document.querySelectorAll('.curriculum-row');
+        let visibleCount = 0;
+        
+        console.log(`Применяем фильтры: блок=${currentBlockFilter}, семестр=${currentSemesterFilter}`);
+        
+        rows.forEach(row => {
+            const blockType = row.getAttribute('data-block');
+            const semesters = row.getAttribute('data-semesters');
+            
+            // Проверяем фильтр по блоку
+            const blockMatch = currentBlockFilter === 'all' || blockType === currentBlockFilter;
+            
+            // Проверяем фильтр по семестру
+            let semesterMatch = false;
+            if (currentSemesterFilter === 'all') {
+                semesterMatch = true;
+            } else if (semesters) {
+                const semArray = semesters.split(',').map(s => s.trim());
+                semesterMatch = semArray.includes(currentSemesterFilter);
+            }
+            
+            // Показываем строку, если она соответствует ВСЕМ активным фильтрам
+            if (blockMatch && semesterMatch) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+        
+        console.log(`Показано ${visibleCount} строк из ${rows.length}`);
+        
+        // Обновляем статистику
+        updateVisibleStats(visibleCount);
+        
+        // Обновляем индикатор фильтров
+        updateFilterStatus(visibleCount);
+    }
+    
+    // Обновляем статистику видимых строк
+    function updateVisibleStats(count) {
+        const statsDiv = document.querySelector('.curriculum-stats');
+        if (statsDiv) {
+            const totalElement = statsDiv.querySelector('div:first-child .stat-value');
+            if (totalElement) {
+                totalElement.textContent = count;
+                totalElement.style.color = count > 0 ? '#28a745' : '#dc3545';
+            }
+        }
+    }
+    
+    // Обновляем статус фильтров
+    function updateFilterStatus(visibleCount) {
+        const filterStatus = document.getElementById('filterStatus');
+        const filterText = document.getElementById('activeFiltersText');
+        
+        if (!filterStatus || !filterText) return;
+        
+        // Определяем названия фильтров
+        const blockNames = {
+            'all': 'Все дисциплины',
+            'base': 'Базовая часть',
+            'variable': 'Вариативная часть',
+            'practice': 'Практики',
+            'final': 'ГИА и ФТД'
+        };
+        
+        const semesterNames = {
+            'all': 'Все семестры',
+            '1': '1 семестр',
+            '2': '2 семестр',
+            '3': '3 семестр',
+            '4': '4 семестр',
+            '5': '5 семестр',
+            '6': '6 семестр',
+            '7': '7 семестр',
+            '8': '8 семестр',
+            '9': '9 семестр'
+        };
+        
+        const blockName = blockNames[currentBlockFilter] || currentBlockFilter;
+        const semesterName = semesterNames[currentSemesterFilter] || currentSemesterFilter + ' семестр';
+        
+        // Показываем индикатор только если есть активные фильтры
+        if (currentBlockFilter !== 'all' || currentSemesterFilter !== 'all') {
+            filterStatus.style.display = 'block';
+            filterText.innerHTML = `
+                <span style="color: #007bff;">${blockName}</span>
+                <span style="margin: 0 5px;">и</span>
+                <span style="color: #28a745;">${semesterName}</span>
+                <span style="margin-left: 10px; font-weight: bold; color: ${visibleCount > 0 ? '#28a745' : '#dc3545'}">
+                    (показано: ${visibleCount})
+                </span>
+            `;
+        } else {
+            filterStatus.style.display = 'none';
+        }
+    }
+    
+    // Инициализируем отображение
+    applyCombinedFilters();
+}
+
+// Функция для статических данных (если JSON не загрузился)
+function renderStaticCurriculum() {
+    console.log('Используем статические данные учебного плана');
+    
+    const staticData = [
+        { 
+            "Индекс": "Б1.О.01", 
+            "Наименование": "Иностранный язык", 
+            "Формы пром. атт.": "Экзамен", 
+            "Семестры": "1,2,3,4" 
+        },
+        { 
+            "Индекс": "Б1.О.02", 
+            "Наименование": "История России", 
+            "Формы пром. атт.": "Экзамен", 
+            "Семестры": "1,2" 
+        },
+        { 
+            "Индекс": "Б1.О.03", 
+            "Наименование": "Философия", 
+            "Формы пром. атт.": "Зачёт", 
+            "Семестры": "3" 
+        },
+        { 
+            "Индекс": "Б1.О.04", 
+            "Наименование": "Физическая культура и спорт", 
+            "Формы пром. атт.": "Зачёт", 
+            "Семестры": "1,2,3,4,5,6,7,8,9" 
+        },
+        { 
+            "Индекс": "Б1.О.05", 
+            "Наименование": "Безопасность жизнедеятельности", 
+            "Формы пром. атт.": "Зачёт", 
+            "Семестры": "5" 
+        }
+    ];
+    
+    renderCurriculumTable(staticData);
+}
+
+// Вспомогательные функции для определения классов
+function getAssessmentClass(assessmentType) {
+    const type = assessmentType ? assessmentType.toLowerCase() : '';
+    if (type.includes('экзамен')) return 'exam-type exam';
+    if (type.includes('зачёт с оценкой')) return 'exam-type graded-credit';
+    if (type.includes('курсовой проект')) return 'exam-type project';
+    if (type.includes('курсовая работа')) return 'exam-type course-work';
+    if (type.includes('зачёт')) return 'exam-type credit';
+    return 'exam-type other';
+}
+
+function getDisciplineTypeClass(code) {
+    if (!code) return 'discipline-type other';
+    if (code.startsWith('Б1.О')) return 'discipline-type base';
+    if (code.startsWith('Б1.В')) return 'discipline-type variable';
+    if (code.startsWith('Б2.')) return 'discipline-type practice';
+    if (code.startsWith('Б3.')) return 'discipline-type final';
+    if (code.startsWith('ФТД')) return 'discipline-type final';
+    return 'discipline-type other';
+}
+
+function getDisciplineTypeName(code) {
+    if (!code) return 'Другое';
+    if (code.startsWith('Б1.О')) return 'Базовая';
+    if (code.startsWith('Б1.В')) return 'Вариативная';
+    if (code.startsWith('Б2.')) return 'Практика';
+    if (code.startsWith('Б3.')) return 'ГИА';
+    if (code.startsWith('ФТД')) return 'ФТД';
+    return 'Другое';
+}
+
+// Загрузка учебного плана
+async function loadProgramCurriculum(programId) {
+    try {
+        console.log(`Загрузка учебного плана для программы ID: ${programId}`);
+        
+        // Используем фиксированный файл для демо
+        const response = await fetch('./js/curriculum-1.json');
+        
+        if (!response.ok) {
+            console.warn('Файл учебного плана не найден, используем статические данные');
+            return;
+        }
+        
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+            throw new TypeError("Получен не JSON файл учебного плана!");
+        }
+        
+        const curriculumData = await response.json();
+        console.log('Загруженные данные учебного плана:', curriculumData);
+        
+        // Проверяем структуру данных
+        if (!Array.isArray(curriculumData)) {
+            console.error('Некорректная структура данных учебного плана:', curriculumData);
+            return;
+        }
+        
+        // Проверяем наличие обязательных полей
+        if (curriculumData.length > 0) {
+            const firstItem = curriculumData[0];
+            const requiredFields = ['Индекс', 'Наименование', 'Формы пром. атт.', 'Семестры'];
+            const missingFields = requiredFields.filter(field => !firstItem.hasOwnProperty(field));
+            
+            if (missingFields.length > 0) {
+                console.error('Отсутствуют обязательные поля в данных:', missingFields);
+                return;
+            }
+        }
+        
+        // Рендерим таблицу
+        renderCurriculumTable(curriculumData);
+        
+    } catch (error) {
+        console.error('Ошибка загрузки учебного плана:', error);
+        // В случае ошибки показываем статические данные
+        renderStaticCurriculum();
+    }
+}
+
 // Функция для загрузки данных программы
 async function loadProgramData() {
     try {
@@ -135,37 +545,67 @@ async function loadProgramData() {
         const programId = urlParams.get('id');
         const programCode = urlParams.get('code');
         
+        // Если нет параметров, используем демо-данные
         if (!programId && !programCode) {
+            console.log('Нет ID или кода программы, загружаем демо-данные');
             await loadDemoData();
             return;
         }
         
-        // Загружаем основной JSON с программами
-        const response = await fetch('data/programs.json');
-        const data = await response.json();
+        // Пробуем загрузить данные из JSON
+        let programData = null;
         
-        // Ищем программу по ID или коду
-        let program;
-        if (programId) {
-            program = data.programs.find(p => p.id == programId);
-        } else if (programCode) {
-            program = data.programs.find(p => p.code === programCode);
+        try {
+            const response = await fetch('./js/cchgeu_programs.json');
+            
+            if (!response.ok) {
+
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const contentType = response.headers.get("content-type");
+            if (!contentType || !contentType.includes("application/json")) {
+                throw new TypeError("Получен не JSON!");
+            }
+            
+            const data = await response.json();
+            console.log('Загруженные данные:', data);
+            
+            // Проверяем структуру данных
+            if (!data || !data.programs || !Array.isArray(data.programs)) {
+                throw new Error('Неверная структура данных JSON');
+            }
+            
+            // Ищем программу
+            if (programId) {
+                programData = data.programs.find(p => parseInt(p.id) === parseInt(programId));
+                console.log(`Поиск программы с ID ${programId}:`, programData);
+            } else if (programCode) {
+                programData = data.programs.find(p => p.code === programCode);
+                console.log(`Поиск программы с кодом ${programCode}:`, programData);
+            }
+            
+        } catch (fetchError) {
+            console.error('Ошибка загрузки JSON:', fetchError);
+            console.log('Используем демо-данные из-за ошибки загрузки');
         }
         
-        if (program) {
-            updateProgramPage(program);
+        // Если нашли программу - обновляем страницу
+        if (programData) {
+            console.log('Найдена программа:', programData);
+            updateProgramPage(programData);
             
             // Загружаем дополнительные детали, если есть
-            if (program.hasDetails) {
-                await loadProgramDetails(program.id);
+            if (programData.hasDetails && programData.id) {
+                await loadProgramDetails(programData.id);
             }
         } else {
-            console.error('Программа не найдена');
+            console.log('Программа не найдена в JSON, загружаем демо-данные');
             await loadDemoData();
         }
         
     } catch (error) {
-        console.error('Ошибка загрузки данных:', error);
+        console.error('Критическая ошибка в loadProgramData:', error);
         await loadDemoData();
     } finally {
         showLoading(false);
@@ -361,22 +801,6 @@ function showDemoDocuments() {
     if (docs2024) {
         // Оставляем существующие демо-документы
         console.log('Используются демо-документы');
-    }
-}
-
-// Загрузка учебного плана
-async function loadProgramCurriculum(programId) {
-    try {
-        const response = await fetch(`data/program-curriculum/${programId}.json`);
-        if (!response.ok) {
-            console.log('Используется демо-учебный план');
-            return;
-        }
-        
-        const curriculum = await response.json();
-        renderCurriculum(curriculum);
-    } catch (error) {
-        console.error('Ошибка загрузки учебного плана:', error);
     }
 }
 

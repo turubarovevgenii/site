@@ -350,91 +350,56 @@
                             </div>
                         </section>
                         
-                        <!-- УЧЕБНЫЙ ПЛАН -->
-                        <section id="curriculum" class="tab-pane">
-                            <h2>Учебный план программы</h2>
-                            <p>Структура и содержание учебного плана по направлению 07.03.01 "Архитектура"</p>
-                            
-                            <div class="documents-tabs" style="margin-top: 2rem;">
-                                <button class="doc-tab active" onclick="filterCurriculum('all')">Весь план</button>
-                                <button class="doc-tab" onclick="filterCurriculum('1')">1 курс</button>
-                                <button class="doc-tab" onclick="filterCurriculum('2')">2 курс</button>
-                                <button class="doc-tab" onclick="filterCurriculum('3')">3 курс</button>
-                                <button class="doc-tab" onclick="filterCurriculum('4')">4 курс</button>
-                            </div>
-                            
-                            <table class="curriculum-table" id="curriculumTable">
-                                <thead>
-                                    <tr>
-                                        <th>Семестр</th>
-                                        <th>Дисциплина</th>
-                                        <th>Зачетные единицы</th>
-                                        <th>Форма контроля</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr data-semester="1">
-                                        <td><span class="semester-badge">1 семестр</span></td>
-                                        <td>История архитектуры</td>
-                                        <td>4</td>
-                                        <td>Экзамен</td>
-                                    </tr>
-                                    <tr data-semester="1">
-                                        <td><span class="semester-badge">1 семестр</span></td>
-                                        <td>Начертательная геометрия</td>
-                                        <td>5</td>
-                                        <td>Экзамен</td>
-                                    </tr>
-                                    <tr data-semester="1">
-                                        <td><span class="semester-badge">1 семестр</span></td>
-                                        <td>Архитектурная графика</td>
-                                        <td>6</td>
-                                        <td>Зачет</td>
-                                    </tr>
-                                    <tr data-semester="2">
-                                        <td><span class="semester-badge">2 семестр</span></td>
-                                        <td>Архитектурное проектирование</td>
-                                        <td>6</td>
-                                        <td>Экзамен</td>
-                                    </tr>
-                                    <tr data-semester="2">
-                                        <td><span class="semester-badge">2 семестр</span></td>
-                                        <td>Строительные конструкции</td>
-                                        <td>5</td>
-                                        <td>Экзамен</td>
-                                    </tr>
-                                    <tr data-semester="3">
-                                        <td><span class="semester-badge">3 семестр</span></td>
-                                        <td>Компьютерные технологии в архитектуре</td>
-                                        <td>4</td>
-                                        <td>Зачет</td>
-                                    </tr>
-                                    <tr data-semester="3">
-                                        <td><span class="semester-badge">3 семестр</span></td>
-                                        <td>Градостроительство</td>
-                                        <td>5</td>
-                                        <td>Экзамен</td>
-                                    </tr>
-                                    <tr data-semester="4">
-                                        <td><span class="semester-badge">4 семестр</span></td>
-                                        <td>Ландшафтная архитектура</td>
-                                        <td>4</td>
-                                        <td>Экзамен</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            
-                            <div style="margin-top: 2rem; padding: 1.5rem; background-color: var(--light-gray); border-radius: var(--border-radius);">
-                                <h4><i class="fas fa-info-circle"></i> Общая информация об учебном плане</h4>
-                                <ul>
-                                    <li><strong>Общая трудоемкость:</strong> 240 зачетных единиц</li>
-                                    <li><strong>Базовая часть:</strong> 150 зачетных единиц</li>
-                                    <li><strong>Вариативная часть:</strong> 90 зачетных единиц</li>
-                                    <li><strong>Практики:</strong> 15 зачетных единиц</li>
-                                    <li><strong>Государственная итоговая аттестация:</strong> 9 зачетных единиц</li>
-                                </ul>
-                            </div>
-                        </section>
+                       <!-- УЧЕБНЫЙ ПЛАН -->
+<section id="curriculum" class="tab-pane">
+    <h2>Учебный план программы "Архитектура" (07.03.01)</h2>
+    <p>Структура и содержание учебного плана по направлению "Архитектура".</p>
+    
+    <!-- Фильтры -->
+    <div class="curriculum-filters">
+        <button class="curriculum-filter-btn active" onclick="filterCurriculumByBlock('all')">Все дисциплины</button>
+        <button class="curriculum-filter-btn" onclick="filterCurriculumByBlock('base')">Базовая часть</button>
+        <button class="curriculum-filter-btn" onclick="filterCurriculumByBlock('variable')">Вариативная часть</button>
+        <button class="curriculum-filter-btn" onclick="filterCurriculumByBlock('practice')">Практики</button>
+        <button class="curriculum-filter-btn" onclick="filterCurriculumByBlock('final')">ГИА и ФТД</button>
+    </div>
+    
+    <!-- Фильтры по семестрам -->
+    <div class="semester-filters" style="margin-top: 1rem;">
+        <button class="semester-filter-btn active" onclick="filterCurriculumBySemester('all')">Все семестры</button>
+        <button class="semester-filter-btn" onclick="filterCurriculumBySemester('1')">1 семестр</button>
+        <button class="semester-filter-btn" onclick="filterCurriculumBySemester('2')">2 семестр</button>
+        <button class="semester-filter-btn" onclick="filterCurriculumBySemester('3')">3 семестр</button>
+        <button class="semester-filter-btn" onclick="filterCurriculumBySemester('4')">4 семестр</button>
+        <button class="semester-filter-btn" onclick="filterCurriculumBySemester('5')">5 семестр</button>
+        <button class="semester-filter-btn" onclick="filterCurriculumBySemester('6')">6 семестр</button>
+        <button class="semester-filter-btn" onclick="filterCurriculumBySemester('7')">7 семестр</button>
+        <button class="semester-filter-btn" onclick="filterCurriculumBySemester('8')">8 семестр</button>
+        <button class="semester-filter-btn" onclick="filterCurriculumBySemester('9')">9 семестр</button>
+    </div>
+    
+    <!-- Остальной код без изменений -->
+    <div id="curriculumLoading" style="text-align: center; padding: 2rem;">
+        <div class="spinner"></div>
+        <p>Загрузка учебного плана...</p>
+    </div>
+    
+    <!-- Таблица -->
+    <div class="curriculum-table-container" style="display: none;">
+        <table class="curriculum-table" id="curriculumTable">
+            <thead>
+                <tr>
+                    <th width="120">Индекс</th>
+                    <th>Наименование дисциплины</th>
+                    <th width="180">Форма промежуточной аттестации</th>
+                    <th width="120">Семестры</th>
+                    <th width="100">Тип</th>
+                </tr>
+            </thead>
+            <tbody id="curriculumTableBody"></tbody>
+        </table>
+    </div>
+</section>
                         
                         <!-- КАРЬЕРА -->
                         <section id="career" class="tab-pane">

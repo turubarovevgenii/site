@@ -33,50 +33,6 @@
             padding: 0 20px;
         }
 
-        /* === ШАПКА === */
-        header {
-            background: linear-gradient(135deg, var(--primary-blue), #002244);
-            color: white;
-            padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .university-info h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .university-info p {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-
-        nav ul {
-            display: flex;
-            gap: 1.5rem;
-            list-style: none;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: var(--border-radius);
-            transition: var(--transition);
-        }
-
-        nav a:hover, nav a.active {
-            background-color: rgba(255, 255, 255, 0.15);
-        }
-
         /* === ХЛЕБНЫЕ КРОШКИ === */
         .breadcrumbs {
             padding: 1rem 0;
@@ -569,6 +525,109 @@
             font-weight: 600;
         }
 
+        /* ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ УЧЕБНОГО ПЛАНА */
+        .curriculum-filters, .semester-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .curriculum-filter-btn, .semester-filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            background: white;
+            color: var(--dark-gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .curriculum-filter-btn:hover, .semester-filter-btn:hover {
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .curriculum-filter-btn.active, .semester-filter-btn.active {
+            background-color: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+        }
+
+        .curriculum-table-container {
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+
+        .exam-type {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .exam-type.exam {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger);
+        }
+
+        .exam-type.credit {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+        }
+
+        .exam-type.project {
+            background-color: rgba(0, 86, 179, 0.1);
+            color: var(--accent-blue);
+        }
+
+        .exam-type.course-work {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: #b58900;
+        }
+
+        .exam-type.graded-credit {
+            background-color: rgba(108, 117, 125, 0.1);
+            color: var(--dark-gray);
+        }
+
+        .discipline-type {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .discipline-type.base {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+        }
+
+        .discipline-type.variable {
+            background-color: rgba(0, 86, 179, 0.1);
+            color: var(--accent-blue);
+        }
+
+        .discipline-type.practice {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: #b58900;
+        }
+
+        .discipline-type.final {
+            background-color: rgba(108, 117, 125, 0.1);
+            color: var(--dark-gray);
+        }
+
+        .discipline-code {
+            font-family: monospace;
+            background-color: var(--light-gray);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
         /* === ФУТЕР === */
         footer {
             background-color: var(--secondary-blue);
@@ -636,6 +695,22 @@
             color: var(--primary-blue);
         }
 
+        /* Анимация спиннера */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
         /* === АДАПТИВНОСТЬ === */
         @media (max-width: 768px) {
             .header-content {
@@ -672,6 +747,26 @@
             
             .documents-list {
                 grid-template-columns: 1fr;
+            }
+            
+            .curriculum-table {
+                font-size: 0.9rem;
+            }
+            
+            .curriculum-table th,
+            .curriculum-table td {
+                padding: 0.5rem;
+            }
+            
+            .curriculum-filters,
+            .semester-filters {
+                justify-content: center;
+            }
+            
+            .curriculum-filter-btn,
+            .semester-filter-btn {
+                font-size: 0.85rem;
+                padding: 0.4rem 0.75rem;
             }
         }
 

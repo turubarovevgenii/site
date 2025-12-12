@@ -1,0 +1,626 @@
+/* Стили для страницы сравнения */
+
+/* Управление сравнением */
+.compare-controls {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--box-shadow);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.compare-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.selected-count {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.1rem;
+}
+
+.selected-count i {
+    color: var(--primary-blue);
+    font-size: 1.5rem;
+}
+
+.selected-count strong {
+    color: var(--primary-blue);
+    font-size: 1.3rem;
+}
+
+.max-info {
+    font-size: 0.9rem;
+    color: var(--dark-gray);
+}
+
+.compare-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* Состояние сравнения */
+.compare-state {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: var(--box-shadow);
+    margin-bottom: 2rem;
+}
+
+.compare-state.empty {
+    border: 2px dashed var(--medium-gray);
+}
+
+.state-content i {
+    font-size: 4rem;
+    color: var(--medium-gray);
+    margin-bottom: 1.5rem;
+}
+
+.state-content h3 {
+    color: var(--secondary-blue);
+    margin-bottom: 0.5rem;
+}
+
+.state-content p {
+    color: var(--dark-gray);
+    max-width: 500px;
+    margin: 0 auto 1.5rem;
+}
+
+/* Сетка выбранных программ */
+.selected-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.selected-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+    border: 2px solid transparent;
+    transition: var(--transition);
+    position: relative;
+}
+
+.selected-card:hover {
+    border-color: var(--primary-blue);
+    transform: translateY(-3px);
+}
+
+.selected-card.selected {
+    border-color: var(--primary-blue);
+    background-color: rgba(0, 51, 102, 0.03);
+}
+
+.selected-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.selected-card-code {
+    font-size: 0.9rem;
+    color: var(--dark-gray);
+    background: var(--light-gray);
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+}
+
+.remove-card {
+    background: none;
+    border: none;
+    color: var(--danger);
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.remove-card:hover {
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+.selected-card-title {
+    font-weight: 600;
+    color: var(--secondary-blue);
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.selected-card-faculty {
+    font-size: 0.9rem;
+    color: var(--dark-gray);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.selected-card-details {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+}
+
+.selected-card-detail {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.selected-card-detail:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-size: 0.85rem;
+    color: var(--dark-gray);
+}
+
+.detail-value {
+    font-weight: 600;
+    color: var(--secondary-blue);
+    font-size: 0.9rem;
+}
+
+/* Таблица сравнения */
+.compare-table-container {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--box-shadow);
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.table-scroll {
+    overflow-x: auto;
+    margin-bottom: 2rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--medium-gray);
+}
+
+.compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.compare-table th {
+    background-color: var(--light-gray);
+    padding: 1rem;
+    text-align: center;
+    font-weight: 600;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.param-category {
+    background-color: var(--primary-blue) !important;
+    color: white !important;
+    text-align: left !important;
+    width: 200px;
+    position: sticky;
+    left: 0;
+    z-index: 10;
+}
+
+.program-header {
+    background-color: var(--secondary-blue) !important;
+    color: white !important;
+}
+
+.compare-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--medium-gray);
+    text-align: center;
+    vertical-align: middle;
+}
+
+.compare-table tr:last-child td {
+    border-bottom: none;
+}
+
+.compare-table td:first-child {
+    text-align: left;
+    font-weight: 600;
+    background-color: var(--light-gray);
+    position: sticky;
+    left: 0;
+    z-index: 5;
+}
+
+.compare-value {
+    font-weight: 600;
+}
+
+.best-value {
+    background-color: rgba(40, 167, 69, 0.1) !important;
+    color: var(--success) !important;
+    position: relative;
+}
+
+.best-value::after {
+    content: '✓';
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 0.8rem;
+    color: var(--success);
+}
+
+/* Итоги сравнения */
+.compare-summary {
+    background: var(--light-gray);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+.compare-summary h3 {
+    color: var(--secondary-blue);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.summary-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.summary-title {
+    font-size: 0.9rem;
+    color: var(--dark-gray);
+    margin-bottom: 0.5rem;
+}
+
+.summary-winner {
+    font-weight: 600;
+    color: var(--primary-blue);
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+}
+
+.summary-reason {
+    font-size: 0.85rem;
+    color: var(--dark-gray);
+}
+
+/* Рекомендации */
+.recommendations {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--box-shadow);
+}
+
+.recommendations h2 {
+    color: var(--secondary-blue);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.recommendations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.recommendation-card {
+    background: var(--light-gray);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    border-left: 4px solid var(--primary-blue);
+}
+
+.recommendation-card.recommended {
+    border-left-color: var(--success);
+}
+
+.recommendation-card.not-recommended {
+    border-left-color: var(--danger);
+}
+
+.recommendation-title {
+    font-weight: 600;
+    color: var(--secondary-blue);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.recommendation-desc {
+    color: var(--dark-gray);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Модальное окно */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 1000px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.modal-header h3 {
+    color: var(--secondary-blue);
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--dark-gray);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.modal-close:hover {
+    background-color: var(--light-gray);
+    color: var(--danger);
+}
+
+.modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+}
+
+.search-box {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    border: 1px solid var(--medium-gray);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+}
+
+.search-box i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--dark-gray);
+}
+
+.modal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.modal-program-card {
+    background: white;
+    border: 1px solid var(--medium-gray);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.modal-program-card:hover {
+    border-color: var(--primary-blue);
+    background-color: rgba(0, 51, 102, 0.03);
+}
+
+.modal-program-card.selected {
+    border-color: var(--primary-blue);
+    background-color: rgba(0, 51, 102, 0.08);
+}
+
+.modal-program-check {
+    display: none;
+}
+
+.modal-program-check:checked + .modal-program-content {
+    opacity: 1;
+}
+
+.modal-program-content {
+    opacity: 0.7;
+}
+
+.modal-program-card.selected .modal-program-content {
+    opacity: 1;
+}
+
+.modal-program-title {
+    font-weight: 600;
+    color: var(--secondary-blue);
+    margin-bottom: 0.25rem;
+}
+
+.modal-program-code {
+    font-size: 0.85rem;
+    color: var(--dark-gray);
+    margin-bottom: 0.5rem;
+}
+
+.modal-program-faculty {
+    font-size: 0.9rem;
+    color: var(--dark-gray);
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-top: 1px solid var(--medium-gray);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .compare-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .compare-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .compare-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .selected-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .table-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+    
+    .table-header .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .recommendations-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-content {
+        width: 95%;
+        max-height: 90vh;
+    }
+    
+    .modal-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .compare-table th,
+    .compare-table td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .param-category {
+        width: 150px;
+    }
+}
+
+.compare-table thead th {
+    vertical-align: top;
+    min-width: 180px;
+}
+
+.program-title-compare {
+    font-weight: 600;
+    color: var(--secondary-blue);
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+    line-height: 1.2;
+}
+
+.program-code-compare {
+    font-size: 0.9rem;
+    color: var(--primary-blue);
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+}
+
+.program-faculty-compare {
+    font-size: 0.8rem;
+    color: var(--dark-gray);
+    line-height: 1.3;
+}
+
+.table-header h2 {
+    color: var(--secondary-blue);
+    margin: 0;
+}

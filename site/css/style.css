@@ -1226,3 +1226,170 @@ footer {
         height: auto;
     }
 }
+
+/* Стили для учебного плана */
+.curriculum-filters, .semester-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.curriculum-filter-btn, .semester-filter-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--medium-gray);
+    border-radius: var(--border-radius);
+    background: white;
+    color: var(--dark-gray);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.curriculum-filter-btn:hover, .semester-filter-btn:hover {
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+}
+
+.curriculum-filter-btn.active, .semester-filter-btn.active {
+    background-color: var(--primary-blue);
+    color: white;
+    border-color: var(--primary-blue);
+}
+
+.curriculum-table-container {
+    overflow-x: auto;
+    margin-top: 1rem;
+}
+
+.curriculum-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+}
+
+.curriculum-table th {
+    background-color: var(--primary-blue);
+    color: white;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+.curriculum-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.curriculum-table tr:hover {
+    background-color: rgba(0, 51, 102, 0.05);
+}
+
+.discipline-code {
+    font-family: monospace;
+    background-color: var(--light-gray);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.exam-type {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.exam-type.exam {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: var(--danger);
+}
+
+.exam-type.credit {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: var(--success);
+}
+
+.exam-type.project {
+    background-color: rgba(0, 86, 179, 0.1);
+    color: var(--accent-blue);
+}
+
+.exam-type.course-work {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #b58900;
+}
+
+.exam-type.graded-credit {
+    background-color: rgba(108, 117, 125, 0.1);
+    color: var(--dark-gray);
+}
+
+.semester-badge {
+    display: inline-block;
+    background-color: var(--primary-blue);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.discipline-type {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.discipline-type.base {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: var(--success);
+}
+
+.discipline-type.variable {
+    background-color: rgba(0, 86, 179, 0.1);
+    color: var(--accent-blue);
+}
+
+.discipline-type.practice {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #b58900;
+}
+
+.discipline-type.final {
+    background-color: rgba(108, 117, 125, 0.1);
+    color: var(--dark-gray);
+}
+
+.discipline-type.choice {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: var(--danger);
+}
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+    .curriculum-table {
+        font-size: 0.9rem;
+    }
+    
+    .curriculum-table th,
+    .curriculum-table td {
+        padding: 0.5rem;
+    }
+    
+    .curriculum-filters,
+    .semester-filters {
+        justify-content: center;
+    }
+    
+    .curriculum-filter-btn,
+    .semester-filter-btn {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.75rem;
+    }
+}

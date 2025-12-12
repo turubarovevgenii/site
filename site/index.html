@@ -17,13 +17,13 @@
 <link rel="manifest" href="/site.webmanifest">
 </head>
 <body>
-    <!-- Шапка (ваш существующий header) -->
     
     <!-- Хлебные крошки -->
     <div class="breadcrumbs">
         <div class="container">
             <ol>
                 <li><a href="index.html">Главная</a></li>
+                <li><a href="compare.html">Сравнение</a></li>
                 <li>Образовательные программы</li>
             </ol>
         </div>
@@ -134,5 +134,12 @@
     <!-- Футер (ваш существующий footer) -->
 
     <script src="./js/main.js"></script>
+
+    <!-- Добавить перед закрывающим тегом </body> в index.html -->
+<button id="quickCompareBtn" style="display: none;">
+    <i class="fas fa-balance-scale"></i>
+    <span>Сравнить программы</span>
+    <span class="quick-compare-count">0</span>
+</button>
 </body>
 </html>
