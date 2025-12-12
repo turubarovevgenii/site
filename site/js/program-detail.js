@@ -36,7 +36,6 @@ function showTab(tabId) {
     }
 }
 
-// Функция для загрузки контента вкладки
 async function loadTabContent(tabId) {
     const tabPane = document.getElementById(tabId);
     if (!tabPane || tabPane.dataset.loaded === 'true') return;
@@ -55,6 +54,7 @@ async function loadTabContent(tabId) {
                 break;
             case 'curriculum':
                 await loadProgramCurriculum(programId);
+                initMobileCurriculumView(); // Инициализация мобильного вида
                 break;
             case 'career':
                 await loadProgramCareer(programId);
@@ -65,9 +65,424 @@ async function loadTabContent(tabId) {
         }
         
         tabPane.dataset.loaded = 'true';
+        
+        // Инициализация мобильной оптимизации для вкладки
+        if (tabId === 'curriculum' || tabId === 'documents') {
+            initMobileTabOptimization(tabId);
+        }
     } catch (error) {
         console.error(`Ошибка загрузки вкладки ${tabId}:`, error);
         showErrorInTab(tabId, 'Не удалось загрузить данные');
+    }
+}
+
+// Инициализация мобильной оптимизации для вкладок
+function initMobileTabOptimization(tabId) {
+    if (window.innerWidth > 768) return; // Только для мобильных
+    
+    if (tabId === 'curriculum') {
+        setupMobileCurriculum();
+    } else if (tabId === 'documents') {
+        setupMobileDocuments();
+    }
+}
+
+// Настройка мобильного вида учебного плана
+function setupMobileCurriculum() {
+    const tableContainer = document.querySelector('.curriculum-table-container');
+    const table = document.getElementById('curriculumTable');
+    
+    if (!tableContainer || !table) return;
+    
+    // Проверяем ширину экрана
+    const isVerySmallScreen = window.innerWidth < 480;
+    
+    // Добавляем кнопку переключения вида
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'table-view-toggle';
+    toggleBtn.innerHTML = `
+        <i class="fas fa-mobile-alt"></i>
+        <span>Переключить вид таблицы</span>
+    `;
+    
+    tableContainer.parentNode.insertBefore(toggleBtn, tableContainer);
+    
+    let isMobileView = isVerySmallScreen;
+    
+    toggleBtn.addEventListener('click', () => {
+        isMobileView = !isMobileView;
+        updateCurriculumView(isMobileView);
+    });
+    
+    // Функция обновления вида таблицы
+    function updateCurriculumView(mobileView) {
+        if (mobileView) {
+            tableContainer.classList.add('mobile-mode');
+            table.classList.add('mobile-mode');
+            toggleBtn.innerHTML = `
+                <i class="fas fa-table"></i>
+                <span>Обычный вид таблицы</span>
+            `;
+            
+            // Добавляем data-атрибуты для мобильного вида
+            const headers = ['Индекс', 'Название дисциплины', 'Форма аттестации', 'Семестры', 'Тип'];
+            const rows = table.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                cells.forEach((cell, index) => {
+                    cell.setAttribute('data-label', headers[index]);
+                });
+            });
+        } else {
+            tableContainer.classList.remove('mobile-mode');
+            table.classList.remove('mobile-mode');
+            toggleBtn.innerHTML = `
+                <i class="fas fa-mobile-alt"></i>
+                <span>Мобильный вид таблицы</span>
+            `;
+        }
+    }
+    
+    // Инициализация вида
+    updateCurriculumView(isMobileView);
+    
+    // Обработчик изменения ориентации экрана
+    window.addEventListener('resize', () => {
+        const newIsVerySmallScreen = window.innerWidth < 480;
+        if (isVerySmallScreen !== newIsVerySmallScreen) {
+            isMobileView = newIsVerySmallScreen;
+            updateCurriculumView(isMobileView);
+        }
+    });
+    
+    // Оптимизация фильтров для мобильных
+    setupMobileFilters();
+}
+
+// Настройка мобильных фильтров
+function setupMobileFilters() {
+    const filters = document.querySelectorAll('.curriculum-filters, .semester-filters');
+    
+    filters.forEach(filterContainer => {
+        // Добавляем индикатор прокрутки
+        const indicator = document.createElement('div');
+        indicator.className = 'scroll-indicator';
+        indicator.innerHTML = '<i class="fas fa-chevron-right"></i>';
+        indicator.style.cssText = `
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 30px;
+            background: linear-gradient(90deg, transparent, white);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            color: var(--dark-gray);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        `;
+        
+        filterContainer.style.position = 'relative';
+        filterContainer.appendChild(indicator);
+        
+        // Показываем индикатор при необходимости прокрутки
+        function updateIndicator() {
+            const canScroll = filterContainer.scrollWidth > filterContainer.clientWidth;
+            indicator.style.opacity = canScroll ? '1' : '0';
+        }
+        
+        filterContainer.addEventListener('scroll', updateIndicator);
+        window.addEventListener('resize', updateIndicator);
+        updateIndicator();
+        
+        // Добавляем инерционный скролл для iOS
+        filterContainer.style.WebkitOverflowScrolling = 'touch';
+    });
+}
+
+// Настройка мобильного вида документов
+function setupMobileDocuments() {
+    const documentCards = document.querySelectorAll('.document-card');
+    
+    documentCards.forEach(card => {
+        // Добавляем возможность свайпа для действий
+        let startX = 0;
+        let currentX = 0;
+        let isSwiping = false;
+        
+        card.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isSwiping = true;
+        }, { passive: true });
+        
+        card.addEventListener('touchmove', (e) => {
+            if (!isSwiping) return;
+            
+            currentX = e.touches[0].clientX - startX;
+            
+            // Ограничиваем максимальный сдвиг
+            if (currentX > 100) currentX = 100;
+            if (currentX < -100) currentX = -100;
+            
+            // Плавное движение
+            card.style.transform = `translateX(${currentX}px)`;
+        }, { passive: true });
+        
+        card.addEventListener('touchend', () => {
+            if (!isSwiping) return;
+            
+            // Возвращаем карточку на место
+            card.style.transition = 'transform 0.3s ease';
+            card.style.transform = 'translateX(0)';
+            
+            // Если сдвиг был значительным, показываем действия
+            if (Math.abs(currentX) > 50) {
+                const actions = card.querySelector('.document-actions');
+                if (actions) {
+                    actions.style.opacity = '1';
+                    actions.style.transform = 'translateY(0)';
+                }
+            }
+            
+            isSwiping = false;
+            
+            // Убираем transition после анимации
+            setTimeout(() => {
+                card.style.transition = '';
+            }, 300);
+        });
+        
+        // Оптимизация для очень маленьких экранов
+        if (window.innerWidth < 400) {
+            const title = card.querySelector('.document-title');
+            if (title) {
+                title.style.fontSize = '0.95rem';
+                title.style.lineHeight = '1.2';
+            }
+            
+            const meta = card.querySelector('.document-meta');
+            if (meta) {
+                meta.style.fontSize = '0.75rem';
+            }
+        }
+    });
+    
+    // Оптимизация вкладок документов
+    setupDocumentTabsMobile();
+}
+
+// Настройка мобильных вкладок документов
+function setupDocumentTabsMobile() {
+    const docTabs = document.querySelector('.documents-tabs');
+    if (!docTabs) return;
+    
+    // Добавляем индикатор активной вкладки
+    const activeIndicator = document.createElement('div');
+    activeIndicator.className = 'active-tab-indicator';
+    activeIndicator.style.cssText = `
+        position: absolute;
+        bottom: 0;
+        height: 3px;
+        background-color: var(--primary-blue);
+        transition: left 0.3s ease, width 0.3s ease;
+        z-index: 1;
+    `;
+    
+    docTabs.style.position = 'relative';
+    docTabs.appendChild(activeIndicator);
+    
+    // Обновляем индикатор при смене вкладки
+    function updateActiveIndicator() {
+        const activeTab = docTabs.querySelector('.doc-tab.active');
+        if (activeTab) {
+            const rect = activeTab.getBoundingClientRect();
+            const parentRect = docTabs.getBoundingClientRect();
+            
+            activeIndicator.style.left = `${rect.left - parentRect.left}px`;
+            activeIndicator.style.width = `${rect.width}px`;
+        }
+    }
+    
+    // Обновляем при клике на вкладку
+    docTabs.querySelectorAll('.doc-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            setTimeout(updateActiveIndicator, 10);
+        });
+    });
+    
+    // Обновляем при изменении размера окна
+    window.addEventListener('resize', updateActiveIndicator);
+    
+    // Инициализация
+    setTimeout(updateActiveIndicator, 100);
+    
+    // Добавляем инерционный скролл для iOS
+    docTabs.style.WebkitOverflowScrolling = 'touch';
+}
+
+// Инициализация мобильного вида учебного плана
+function initMobileCurriculumView() {
+    if (window.innerWidth > 768) return;
+    
+    // Добавляем вспомогательные стили для таблицы
+    const style = document.createElement('style');
+    style.textContent = `
+        @media (max-width: 768px) {
+            .curriculum-table.mobile-mode td[data-label="Индекс"] {
+                background-color: var(--primary-blue) !important;
+                color: white !important;
+            }
+            
+            .curriculum-table.mobile-mode td[data-label="Название дисциплины"] {
+                font-weight: 600;
+                background-color: var(--light-gray);
+            }
+            
+            .curriculum-table.mobile-mode .exam-type,
+            .curriculum-table.mobile-mode .semester-badge,
+            .curriculum-table.mobile-mode .discipline-type {
+                display: block;
+                margin: 0.25rem 0;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .curriculum-table.mobile-mode td {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .curriculum-table.mobile-mode td::before {
+                min-width: 100%;
+                margin-right: 0;
+                padding-bottom: 0.25rem;
+                border-bottom: 1px solid var(--medium-gray);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// Обновить функцию renderCurriculumTable для поддержки мобильного вида
+function renderCurriculumTable(curriculumData) {
+    console.log('Рендеринг таблицы с', curriculumData.length, 'элементами');
+    
+    // 1. Скрываем спиннер загрузки
+    const loadingElement = document.getElementById('curriculumLoading');
+    if (loadingElement) {
+        loadingElement.style.display = 'none';
+    }
+    
+    // 2. Показываем контейнер таблицы
+    const tableContainer = document.querySelector('.curriculum-table-container');
+    if (tableContainer) {
+        tableContainer.style.display = 'block';
+        
+        // Добавляем класс для мобильной оптимизации
+        if (window.innerWidth <= 768) {
+            tableContainer.classList.add('mobile-optimized');
+        }
+    }
+    
+    // 3. Находим тело таблицы
+    const tableBody = document.getElementById('curriculumTableBody');
+    if (!tableBody) {
+        console.error('Не найдено тело таблицы (curriculumTableBody)');
+        return;
+    }
+    
+    // 4. Очищаем таблицу перед заполнением
+    tableBody.innerHTML = '';
+    
+    // 5. Заполняем таблицу данными с учетом мобильной оптимизации
+    curriculumData.forEach((item, index) => {
+        const assessmentClass = getAssessmentClass(item['Формы пром. атт.']);
+        const typeClass = getDisciplineTypeClass(item['Индекс']);
+        const typeName = getDisciplineTypeName(item['Индекс']);
+        const blockType = typeClass.replace('discipline-type ', '');
+        
+        // Форматируем семестры для отображения
+        const semesters = item['Семестры'] || '';
+        const formattedSemesters = formatSemestersDisplay(semesters);
+        
+        // Оптимизация для мобильных: сокращаем длинные названия
+        let disciplineName = item['Наименование'] || '—';
+        if (window.innerWidth <= 768 && disciplineName.length > 50) {
+            disciplineName = disciplineName.substring(0, 47) + '...';
+        }
+        
+        const row = document.createElement('tr');
+        row.className = 'curriculum-row';
+        row.setAttribute('data-block', blockType);
+        row.setAttribute('data-semesters', semesters);
+        
+        row.innerHTML = `
+            <td>
+                <span class="discipline-code" title="${item['Индекс'] || '—'}">${item['Индекс'] || '—'}</span>
+            </td>
+            <td>
+                <strong class="discipline-name" title="${item['Наименование'] || '—'}">${disciplineName}</strong>
+            </td>
+            <td>
+                <span class="exam-type ${assessmentClass}" title="${item['Формы пром. атт.'] || '—'}">
+                    ${getShortAssessmentType(item['Формы пром. атт.'] || '—')}
+                </span>
+            </td>
+            <td>
+                <span class="semester-badge">${formattedSemesters}</span>
+            </td>
+            <td>
+                <span class="discipline-type ${typeClass}" title="${typeName}">
+                    ${getShortTypeName(typeName)}
+                </span>
+            </td>
+        `;
+        
+        tableBody.appendChild(row);
+    });
+    
+    console.log('Таблица успешно заполнена, строк:', curriculumData.length);
+    
+    // 6. Добавляем информацию о количестве дисциплин
+    addCurriculumStats(curriculumData.length);
+    
+    // 7. Инициализируем фильтры
+    initCurriculumFilters();
+    
+    // 8. Инициализируем мобильную оптимизацию
+    if (window.innerWidth <= 768) {
+        initMobileCurriculumView();
+    }
+}
+
+// Вспомогательные функции для сокращения текста на мобильных
+function getShortAssessmentType(fullType) {
+    if (window.innerWidth > 768) return fullType;
+    
+    const type = fullType.toLowerCase();
+    if (type.includes('экзамен')) return 'Экз.';
+    if (type.includes('зачёт с оценкой')) return 'З/о';
+    if (type.includes('курсовой проект')) return 'КП';
+    if (type.includes('курсовая работа')) return 'КР';
+    if (type.includes('зачёт')) return 'Зачёт';
+    return fullType.substring(0, 10);
+}
+
+function getShortTypeName(fullName) {
+    if (window.innerWidth > 768) return fullName;
+    
+    switch(fullName) {
+        case 'Базовая': return 'Баз.';
+        case 'Вариативная': return 'Вар.';
+        case 'Практика': return 'Прак.';
+        case 'ГИА': return 'ГИА';
+        case 'ФТД': return 'ФТД';
+        default: return fullName.substring(0, 6);
     }
 }
 

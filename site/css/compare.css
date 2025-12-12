@@ -624,3 +624,183 @@
     color: var(--secondary-blue);
     margin: 0;
 }
+
+@media (max-width: 768px) {
+    .compare-table-container {
+        margin: 0 -1rem;
+        width: calc(100% + 2rem);
+        padding: 1rem;
+    }
+    
+    .table-scroll {
+        border: none;
+        margin: 0 -1rem;
+        width: calc(100% + 2rem);
+    }
+    
+    .compare-table {
+        min-width: 800px;
+        font-size: 0.85rem;
+    }
+    
+    .compare-table th,
+    .compare-table td {
+        padding: 0.6rem 0.5rem;
+        min-width: 150px;
+    }
+    
+    .param-category {
+        width: 150px;
+        font-size: 0.9rem;
+        position: sticky;
+        left: 0;
+        z-index: 10;
+    }
+    
+    .compare-table td:first-child {
+        width: 150px;
+        position: sticky;
+        left: 0;
+        z-index: 5;
+        background-color: var(--light-gray);
+        font-size: 0.9rem;
+    }
+    
+    .program-title-compare {
+        font-size: 0.9rem;
+        line-height: 1.2;
+    }
+    
+    .program-code-compare {
+        font-size: 0.8rem;
+    }
+    
+    .program-faculty-compare {
+        font-size: 0.75rem;
+        display: none; /* Скрываем факультет на мобильных для экономии места */
+    }
+    
+    .best-value::after {
+        font-size: 0.7rem;
+        top: 3px;
+        right: 3px;
+    }
+    
+    /* Карточки выбранных программ на мобильных */
+    .selected-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .selected-card {
+        padding: 1.25rem;
+    }
+    
+    .selected-card-details {
+        font-size: 0.9rem;
+    }
+    
+    /* Рекомендации на мобильных */
+    .recommendations-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .recommendation-card {
+        padding: 1.25rem;
+    }
+    
+    /* Итоги сравнения на мобильных */
+    .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+    
+    .summary-card {
+        padding: 0.75rem;
+    }
+    
+    .summary-value {
+        font-size: 1.2rem;
+    }
+    
+    .summary-label {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .compare-table {
+        min-width: 700px;
+        font-size: 0.8rem;
+    }
+    
+    .compare-table th,
+    .compare-table td {
+        padding: 0.5rem 0.4rem;
+        min-width: 130px;
+    }
+    
+    .param-category {
+        width: 120px;
+        font-size: 0.85rem;
+    }
+    
+    .compare-table td:first-child {
+        width: 120px;
+        font-size: 0.85rem;
+    }
+    
+    /* Управление сравнением на очень маленьких экранах */
+    .compare-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .compare-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .compare-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* Итоги сравнения на очень маленьких экранах */
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Горизонтальная ориентация на мобильных */
+@media (max-height: 500px) and (orientation: landscape) {
+    .compare-table {
+        min-width: 600px;
+    }
+    
+    .selected-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .selected-card {
+        min-height: 200px;
+    }
+}
+
+/* Улучшения для touch устройств */
+@media (hover: none) and (pointer: coarse) {
+    .compare-table-container {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .table-scroll {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .selected-card,
+    .recommendation-card,
+    .summary-card {
+        -webkit-tap-highlight-color: transparent;
+    }
+}
